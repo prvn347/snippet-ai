@@ -4,6 +4,7 @@ import "./globals.css";
 import { Appbar } from "@/components/AppBar";
 import { cn } from "../lib/utils";
 import { ThemeProvider } from "next-themes";
+import { Providers } from "./provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,8 +32,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Appbar />
-          {children}
+          <Providers>
+            <Appbar />
+            {children}
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

@@ -16,8 +16,8 @@ import {
 import { useSession } from "next-auth/react";
 const inter = Montserrat({ subsets: ["latin"] });
 export const Appbar = () => {
-  //   const session = useSession();
-  const user = false;
+  const session = useSession();
+  const user = session.data?.user;
   const admin = false;
 
   return (

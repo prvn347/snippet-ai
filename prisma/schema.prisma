@@ -19,9 +19,10 @@ model User{
   name String?
   image         String?
   admin         Boolean      @default(false)
-  password String 
+  password String?
   Gist  Gist[]
   GistUrl GistUrl[]
+    Comments  Comment[]
   createAt DateTime @default(now())
 
 
@@ -29,14 +30,16 @@ model User{
 
 model Gist {
   id Int @id @default(autoincrement())
-  title String
+  
   description String?
+  fileName String?
   code String
   explaination String?
   access Access
   userId Int
   url GistUrl[]
   User User @relation(fields: [userId],references: [id])
+   comments     Comment[]
   createdAt          DateTime         @default(now())
 
 }
@@ -51,6 +54,15 @@ model GistUrl{
   Access Access
 }
 
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  userId    Int
+  gistId    Int
+  User      User     @relation(fields: [userId],references: [id])
+  Gist      Gist     @relation(fields: [gistId],references: [id])
+  createdAt DateTime @default(now())
+}
 enum Access{
     Private
     Public
