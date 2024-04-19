@@ -3,6 +3,7 @@ import { authOption } from "@/lib/authoption";
 import { getServerSession } from "next-auth";
 
 import { PrismaClient } from "@prisma/client";
+import Error from "next/error";
 const prisma = new PrismaClient();
 
 export async function CreateSnippet(gistMeta: {
@@ -26,6 +27,30 @@ export async function CreateSnippet(gistMeta: {
     console.log(snippet);
     return snippet;
   } catch (error: any) {
-    throw new error("error while creating gist");
+    return null;
+  }
+}
+
+export async function getSnippet(id: number) {
+  try {
+    const snippet = await prisma.gist.findFirst({
+      where: {
+        id: id,
+      },
+      select: {
+        fileName: true,
+        description: true,
+        explaination: true,
+        code: true,
+        User: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return snippet;
+  } catch (error: any) {
+    return null;
   }
 }

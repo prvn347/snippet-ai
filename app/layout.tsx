@@ -5,6 +5,7 @@ import { Appbar } from "@/components/AppBar";
 import { cn } from "../lib/utils";
 import { ThemeProvider } from "next-themes";
 import { Providers } from "./provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
           <Providers>
             <Appbar />
             {children}
+            <Toaster />
           </Providers>
         </ThemeProvider>
       </body>

@@ -1,10 +1,17 @@
 import { Appbar } from "@/components/AppBar";
 import { SnippetBlock } from "@/components/SnippetBlock";
+import { getSnippet } from "@/components/utils";
 
-export default function () {
+interface props {
+  params: { id: number };
+}
+export default async function ({ params }: props) {
+  console.log(params.id);
+  const snippet = await getSnippet(Number(params.id));
+
   return (
     <div>
-      <SnippetBlock />
+      <SnippetBlock snippet={snippet} />
     </div>
   );
 }

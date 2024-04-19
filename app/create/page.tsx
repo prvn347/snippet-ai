@@ -11,6 +11,8 @@ import { marked } from "marked";
 import { CreateSnippet } from "@/components/utils";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 // or const { marked } = require('marked');
 
 interface Choice {
@@ -18,6 +20,7 @@ interface Choice {
   content: string;
 }
 export default function () {
+  const { toast } = useToast();
   const router = useRouter();
   const [gistMeta, setGistMeta] = useState({
     fileName: "",
@@ -78,8 +81,25 @@ export default function () {
             <Button
               variant={"default"}
               onClick={async () => {
-                const resp = await CreateSnippet(gistMeta);
-                router.push("/snippet/2");
+                if (
+                  gistMeta.analyzedData &&
+                  gistMeta.code &&
+                  gistMeta.description &&
+                  gistMeta.fileName
+                ) {
+                  const resp = await CreateSnippet(gistMeta);
+                  router.push("/snippet/2");
+                } else {
+                  toast({
+                    title: "Content can't be empty",
+
+                    action: (
+                      <ToastAction altText="Goto schedule to undo">
+                        ok
+                      </ToastAction>
+                    ),
+                  });
+                }
               }}
             >
               Create Snippet
