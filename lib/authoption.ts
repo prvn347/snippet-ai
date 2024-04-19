@@ -24,12 +24,13 @@ export const authOption = {
       try {
         const user = await prisma.user.findUnique({
           where: {
-            email: session.user.email,
+            id: session.user.id,
           },
         });
         if (!user) {
           const newuser = await prisma.user.create({
             data: {
+              id: session.user.id,
               email: session.user.email,
               name: session.user.name,
               image: session.user.image,

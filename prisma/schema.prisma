@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User{
-  id Int @id @default(autoincrement())
+  id String @id @unique
   email String @unique
   name String?
   image         String?
@@ -36,7 +36,7 @@ model Gist {
   code String
   explaination String?
   access Access
-  userId Int
+  userId String
   url GistUrl[]
   User User @relation(fields: [userId],references: [id])
    comments     Comment[]
@@ -45,7 +45,7 @@ model Gist {
 }
 model GistUrl{
   id Int @id @default(autoincrement())
-  userId Int
+  userId String
   gistId Int
   User User @relation(fields: [userId],references: [id])
   Gist Gist @relation(fields: [gistId],references: [id])
@@ -57,7 +57,7 @@ model GistUrl{
 model Comment {
   id        Int      @id @default(autoincrement())
   text      String
-  userId    Int
+  userId    String
   gistId    Int
   User      User     @relation(fields: [userId],references: [id])
   Gist      Gist     @relation(fields: [gistId],references: [id])
