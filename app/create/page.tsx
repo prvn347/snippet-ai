@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { sendMessage } from "@/lib/sendMessage";
 import { useState } from "react";
-import { MagicWandIcon } from "@radix-ui/react-icons";
+import { MagicWandIcon, StarIcon } from "@radix-ui/react-icons";
 import Spinner from "@/components/Spinner";
 import { marked } from "marked";
-import { CreateSnippet } from "@/lib/utils";
+import { CreateSnippet } from "@/components/utils";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 // or const { marked } = require('marked');
 
 interface Choice {
@@ -16,9 +18,14 @@ interface Choice {
   content: string;
 }
 export default function () {
-  const [code, setCode] = useState("");
+  const router = useRouter();
+  const [gistMeta, setGistMeta] = useState({
+    fileName: "",
+    description: "",
+    code: "",
+    analyzedData: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const [analyzedData, setAnalyzedData] = useState("");
 
   return (
     <div>
@@ -28,8 +35,14 @@ export default function () {
             type="text"
             className=" bg-slate-800  active:outline-none"
             placeholder=" Snippet description..."
+            onChange={(e) => {
+              setGistMeta({ ...gistMeta, description: e.target.value });
+            }}
           />
-          <CodeInput onChange={(e) => setCode(e)} />
+          <CodeInput
+            onTitleChange={(e) => setGistMeta({ ...gistMeta, fileName: e })}
+            onChange={(e) => setGistMeta({ ...gistMeta, code: e })}
+          />
           <div className=" text-right">
             <Button
               variant={"default"}
@@ -37,10 +50,10 @@ export default function () {
                 setIsLoading(true);
                 const resp = await sendMessage(
                   "explain me this " +
-                    code +
+                    gistMeta.code +
                     "and explain robot and please provider the answer in indentated html format so that i can display them properly"
                 );
-                setAnalyzedData(resp.mag);
+                setGistMeta({ ...gistMeta, analyzedData: resp.mag });
                 setIsLoading(false);
               }}
             >
@@ -56,7 +69,7 @@ export default function () {
               {" "}
               <div
                 dangerouslySetInnerHTML={{
-                  __html: analyzedData,
+                  __html: gistMeta.analyzedData,
                 }}
               />
             </article>
@@ -65,13 +78,11 @@ export default function () {
             <Button
               variant={"default"}
               onClick={async () => {
-                setIsLoading(true);
-                // const resp = await CreateSnippet()
-
-                setIsLoading(false);
+                const resp = await CreateSnippet(gistMeta);
+                router.push("/snippet/2");
               }}
             >
-              Create <MagicWandIcon />
+              Create Snippet
             </Button>
           </div>
           {/* <div>

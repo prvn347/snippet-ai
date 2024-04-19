@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Input } from "./ui/input";
 
-export function CodeInput({ onChange }: { onChange: (e: string) => void }) {
+export function CodeInput({
+  onChange,
+  onTitleChange,
+}: {
+  onChange: (e: string) => void;
+  onTitleChange: (e: string) => void;
+}) {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
   };
@@ -10,7 +16,11 @@ export function CodeInput({ onChange }: { onChange: (e: string) => void }) {
     <div className="flex items-center justify-center">
       <div className="w-full bg-gray-100  dark:bg-background  rounded-lg">
         <div className="p-3  dark:bg-slate-800 ">
-          <Input placeholder="File name with extension. " className=" w-30" />
+          <Input
+            onChange={(e) => onTitleChange(e.target.value)}
+            placeholder="File name with extension. "
+            className=" w-30"
+          />
         </div>
         <pre>
           <code>
