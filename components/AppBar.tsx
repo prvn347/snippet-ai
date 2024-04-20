@@ -43,7 +43,12 @@ export const Appbar = () => {
           >
             <PlusIcon />
           </Button>
-          <Button variant={"link"} onClick={async () => {}}>
+          <Button
+            variant={"link"}
+            onClick={async () => {
+              router.push("/snippets");
+            }}
+          >
             {" "}
             All snippets
           </Button>

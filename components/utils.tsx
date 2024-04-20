@@ -54,3 +54,35 @@ export async function getSnippet(id: number) {
     return null;
   }
 }
+export async function findAllSnippets(userId: string) {
+  const session = await getServerSession(authOption);
+
+  const getAllSnippets = await prisma.user.findMany({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      name: true,
+      image: true,
+      Gist: {
+        select: {
+          code: true,
+          createdAt: true,
+        },
+      },
+    },
+  });
+}
+
+export async function createGistUrl(id: number, url: string, gistId: number) {
+  const session = await getServerSession(authOption);
+  const gisturl = await prisma.gistUrl.create({
+    data: {
+      url: url,
+      userId: session.user.id,
+      Access: "Public",
+      gistId: gistId,
+    },
+  });
+  return gisturl;
+}
