@@ -44,22 +44,19 @@ export function SnippetBlock({
       <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
         <div>
           <div className=" p-3 ">
-            {snippet?.User.name} Pravin /{" "}
+            {snippet?.User.name} /{" "}
             <span className=" text-sm font-bold font-mono text-purple-800">
-              {snippet?.fileName} fileName.tsx
+              {snippet?.fileName}
             </span>
           </div>
           <div className="p-3 text-lg  font-extralight text-purple-500 bg-background rounded-md">
-            {snippet?.description} Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Officiis, nemo excepturi ut fugiat quia architecto
-            perferendis magni id quisquam dolor vero dicta, delectus praesentium
-            ducimus eveniet voluptatem sequi! Ducimus, harum?
+            {snippet?.description}
           </div>
 
           <div className="w-full lg:max-w-3xl mx-auto bg-gray-900 px-4 rounded-md shadow-lg relative">
             <div className="flex justify-between items-center px-4 py-4 rounded-t-lg">
               <span className="text-xs font-semibold text-gray-400">
-                {snippet?.fileName}hello.js
+                {snippet?.fileName}
               </span>
               <button
                 id="copyButton"
@@ -84,13 +81,21 @@ export function SnippetBlock({
             </div>
             <pre className="text-sm  text-wrap    ">
               <code id="codeBlock" className="language-javascript block ">
-                {snippet?.code}hello
+                {snippet?.code}
               </code>
             </pre>
           </div>
+          <span className=" font-bold text-2xl p-3 text-purple-600">
+            {" "}
+            AI Explaination:
+          </span>
           {snippet?.explaination && (
-            <article className="prose lg:prose-xl font-mono border p-3 max-w-3xl rounded-md bg-[#322a18]">
-              {snippet?.explaination}hello
+            <article className="prose lg:prose-xl font-mono border border-purple-700 mt-3 p-3 max-w-3xl rounded-md bg-background">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: snippet.explaination,
+                }}
+              />
             </article>
           )}
           <div className=" flex justify-center p-3">

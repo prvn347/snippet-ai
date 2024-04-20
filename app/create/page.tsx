@@ -52,9 +52,12 @@ export default function () {
               onClick={async () => {
                 setIsLoading(true);
                 const resp = await sendMessage(
-                  "explain me this " +
-                    gistMeta.code +
-                    "and explain robot and please provider the answer in indentated html format so that i can display them properly"
+                  `Warning:Please provider the response in html format as i am using your api so that I can populate your resonse neatly on browser.You will be asked a to explain a given code snippet.Your reply should be in html format with proper indentation. Your reply should include a title, a descriptive paragraph,and in bullet points and a concluding paragraph as illustrated below.Example question: What is the meaning of life?Example reply:Title: About life Description: Life. Don't talk to me about life.Conclusion: All the circuits down my left arm code: [${gistMeta.code}]Reply: `
+                  // "explain me this in textual words  " +
+                  //   "\n" +
+                  //    +
+                  //   "\n" +
+                  //   "   and please provider the answer in indentated html format so that i can display them properly"
                 );
                 setGistMeta({ ...gistMeta, analyzedData: resp.mag });
                 setIsLoading(false);
@@ -88,7 +91,19 @@ export default function () {
                   gistMeta.fileName
                 ) {
                   const resp = await CreateSnippet(gistMeta);
-                  router.push("/snippet/2");
+                  const id = resp.id;
+                  if (id) {
+                    router.push(`/snippet/${id}`);
+                  } else {
+                    toast({
+                      title: "Your session expired please signin again!",
+                      action: (
+                        <ToastAction altText="Goto schedule to undo">
+                          ok
+                        </ToastAction>
+                      ),
+                    });
+                  }
                 } else {
                   toast({
                     title: "Content can't be empty",
