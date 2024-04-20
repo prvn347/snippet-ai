@@ -32,9 +32,7 @@ export async function CreateSnippet(gistMeta: {
         gistId: snippet.id,
       },
     });
-    console.log(gisturl);
 
-    console.log(snippet);
     return snippet;
   } catch (error: any) {
     return null;
@@ -65,29 +63,44 @@ export async function getSnippet(id: number) {
     return null;
   }
 }
-export async function findAllSnippets(userId: string) {
+export async function findAllSnippets() {
   const session = await getServerSession(authOption);
 
-  const getAllSnippets = await prisma.user.findMany({
+  const getAllSnippets = await prisma.gist.findMany({
     where: {
-      id: session.user.id,
+      userId: session.user.id,
     },
     select: {
-      name: true,
-      image: true,
-      Gist: {
-        select: {
-          code: true,
-          createdAt: true,
-        },
-      },
-      GistUrl: {
+      id: true,
+      fileName: true,
+      code: true,
+      createdAt: true,
+      url: {
         select: {
           url: true,
         },
       },
+      User: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
     },
   });
+
+  const final = getAllSnippets.map((snippet) => ({
+    code: snippet.code,
+    fileName: snippet.fileName,
+    user: snippet.User.name,
+    createdAt: snippet.createdAt,
+    image: snippet.User.image,
+    url: snippet.url.map((e) => {
+      url: e.url;
+    }),
+    id: snippet.id,
+  }));
+  return final;
 }
 
 export async function createGistUrl(gistMeta: { url: string; gistId: number }) {
@@ -100,6 +113,6 @@ export async function createGistUrl(gistMeta: { url: string; gistId: number }) {
       gistId: gistMeta.gistId,
     },
   });
-  console.log(gisturl);
+
   return gisturl;
 }
