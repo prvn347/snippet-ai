@@ -2,7 +2,7 @@
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github-dark.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LucideShare } from "lucide-react";
 import {
   Dialog,
@@ -18,6 +18,7 @@ import { Input } from "./ui/input";
 import { usePathname } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
+import { createGistUrl } from "./utils";
 
 // Then register the languages you need
 
@@ -25,6 +26,7 @@ export function SnippetBlock({
   snippet,
 }: {
   snippet: {
+    id: number;
     code: string;
     description: string | null;
     fileName: string | null;
@@ -39,6 +41,7 @@ export function SnippetBlock({
     hljs.highlightAll();
   }, []);
   const { toast } = useToast();
+
   return (
     <div className="flex justify-center ">
       <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">

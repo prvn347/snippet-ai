@@ -8,7 +8,7 @@ import { useState } from "react";
 import { MagicWandIcon, StarIcon } from "@radix-ui/react-icons";
 import Spinner from "@/components/Spinner";
 import { marked } from "marked";
-import { CreateSnippet } from "@/components/utils";
+import { CreateSnippet, createGistUrl } from "@/components/utils";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { ToastAction } from "@/components/ui/toast";
@@ -91,6 +91,7 @@ export default function () {
                   gistMeta.fileName
                 ) {
                   const resp = await CreateSnippet(gistMeta);
+
                   const id = resp.id;
                   if (id) {
                     router.push(`/snippet/${id}`);

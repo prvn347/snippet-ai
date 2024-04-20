@@ -24,6 +24,16 @@ export async function CreateSnippet(gistMeta: {
         access: "Public",
       },
     });
+    const gisturl = await prisma.gistUrl.create({
+      data: {
+        url: `http://localhost:3000/snippet/${snippet.id}`,
+        userId: session.user.id,
+        Access: "Public",
+        gistId: snippet.id,
+      },
+    });
+    console.log(gisturl);
+
     console.log(snippet);
     return snippet;
   } catch (error: any) {
@@ -38,6 +48,7 @@ export async function getSnippet(id: number) {
         id: id,
       },
       select: {
+        id: true,
         fileName: true,
         description: true,
         explaination: true,
@@ -70,19 +81,25 @@ export async function findAllSnippets(userId: string) {
           createdAt: true,
         },
       },
+      GistUrl: {
+        select: {
+          url: true,
+        },
+      },
     },
   });
 }
 
-export async function createGistUrl(id: number, url: string, gistId: number) {
+export async function createGistUrl(gistMeta: { url: string; gistId: number }) {
   const session = await getServerSession(authOption);
   const gisturl = await prisma.gistUrl.create({
     data: {
-      url: url,
+      url: gistMeta.url,
       userId: session.user.id,
       Access: "Public",
-      gistId: gistId,
+      gistId: gistMeta.gistId,
     },
   });
+  console.log(gisturl);
   return gisturl;
 }
