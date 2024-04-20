@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { ModeToggle } from "./ModeToggle";
 import { signIn, signOut } from "next-auth/react";
 import { Montserrat } from "next/font/google";
+import { PlusIcon } from "@radix-ui/react-icons";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,12 +14,16 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const inter = Montserrat({ subsets: ["latin"] });
 export const Appbar = () => {
   const session = useSession();
   const user = session.data?.user;
   const admin = false;
+  const router = useRouter();
 
   return (
     <div className="bg-zinc-50 dark:bg-zinc-950 p-3 flex justify-center border-b shadow-md sticky top-0 z-50">
@@ -31,24 +36,13 @@ export const Appbar = () => {
           </div>
         </Link>
         <div className="flex items-center gap-2">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger> Create</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="p-3  dark:bg-black flex flex-col dark:text-white ">
-                    <NavigationMenuLink href="/create" className="p-2">
-                      Snippet
-                    </NavigationMenuLink>
-
-                    <NavigationMenuLink className="p-2">
-                      Enhanced Snippet
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          <Button
+            onClick={() => {
+              router.push("/create");
+            }}
+          >
+            <PlusIcon />
+          </Button>
           <Button variant={"link"} onClick={async () => {}}>
             {" "}
             All snippets
@@ -65,20 +59,56 @@ export const Appbar = () => {
           ) : (
             ""
           )}
-          {user ? (
-            <Button
-              variant={"link"}
-              onClick={async () => {
-                await signOut();
-              }}
-            >
-              Logout
-            </Button>
-          ) : (
-            ""
-          )}
 
           <ModeToggle />
+          {user && (
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>
+                    {" "}
+                    <Avatar>
+                      <AvatarImage src={session.data?.user?.image} alt="@me" />
+                      <AvatarFallback>
+                        {session.data?.user?.image[0]}
+                      </AvatarFallback>
+                    </Avatar>{" "}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="p-3  dark:bg-black flex flex-col dark:text-white ">
+                      <NavigationMenuLink className="p-2">
+                        signed in as{" "}
+                        <span className=" text-sm font-bold">
+                          {session.data?.user?.email}
+                        </span>
+                      </NavigationMenuLink>
+
+                      <NavigationMenuLink className="p-2">
+                        <Button variant={"link"} onClick={async () => {}}>
+                          your snippets
+                        </Button>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink className="p-2">
+                        <Button variant={"link"} onClick={async () => {}}>
+                          Fav snippets
+                        </Button>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink className="p-2">
+                        <Button
+                          variant={"link"}
+                          onClick={async () => {
+                            await signOut();
+                          }}
+                        >
+                          Logout
+                        </Button>
+                      </NavigationMenuLink>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          )}
         </div>
       </div>
     </div>
