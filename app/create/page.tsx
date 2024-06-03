@@ -13,8 +13,15 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { Poppins } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { PocketKnife, Sparkle } from "lucide-react";
+import { CodeIcon } from "lucide-react";
 // or const { marked } = require('marked');
-
+const btnFont = Poppins({
+  weight: ["400", "300"],
+  subsets: ["latin"],
+});
 interface Choice {
   id: string;
   content: string;
@@ -32,7 +39,7 @@ export default function () {
 
   return (
     <div>
-      <div className=" flex justify-center">
+      <div className=" flex justify-center  ">
         <div className="flex flex-col gap-4  pt-5">
           <Input
             type="text"
@@ -48,22 +55,18 @@ export default function () {
           />
           <div className=" text-right">
             <Button
+              className={cn("", btnFont.className)}
               variant={"default"}
               onClick={async () => {
                 setIsLoading(true);
                 const resp = await sendMessage(
                   `Warning:Please provider the response in html format as i am using your api so that I can populate your resonse neatly on browser.You will be asked a to explain a given code snippet.Your reply should be in html format with proper indentation. Your reply should include a title, a descriptive paragraph,and in bullet points and a concluding paragraph as illustrated below.Example question: What is the meaning of life?Example reply:Title: About life Description: Life. Don't talk to me about life.Conclusion: All the circuits down my left arm code: [${gistMeta.code}]Reply: `
-                  // "explain me this in textual words  " +
-                  //   "\n" +
-                  //    +
-                  //   "\n" +
-                  //   "   and please provider the answer in indentated html format so that i can display them properly"
                 );
                 setGistMeta({ ...gistMeta, analyzedData: resp.mag });
                 setIsLoading(false);
               }}
             >
-              Explain Me <MagicWandIcon />
+              Explain Me &nbsp; <Sparkle />
             </Button>
           </div>
           {isLoading ? (
@@ -71,8 +74,7 @@ export default function () {
               <Spinner />
             </div>
           ) : (
-            <article className="prose lg:prose-xl font-mono border border-gray-50 p-3 max-w-3xl rounded-md bg-[#322a18]">
-              {" "}
+            <article className="prose lg:prose-xl font-mono border-purple-400 bg-purple-500 bg-opacity-50 backdrop-blur-md p-3 max-w-3xl rounded-md">
               <div
                 dangerouslySetInnerHTML={{
                   __html: gistMeta.analyzedData,
@@ -82,6 +84,7 @@ export default function () {
           )}
           <div className=" text-right">
             <Button
+              className={cn("", btnFont.className)}
               variant={"default"}
               onClick={async () => {
                 if (
@@ -118,7 +121,7 @@ export default function () {
                 }
               }}
             >
-              Create Snippet
+              Create Snippet <CodeIcon />
             </Button>
           </div>
           {/* <div>

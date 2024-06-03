@@ -10,7 +10,7 @@ export default async function ({ params }: props) {
   const snippet = await getSnippet(Number(params.id));
 
   return (
-    <div>
+    <div className=" m-5">
       <SnippetBlock snippet={snippet} />
     </div>
   );

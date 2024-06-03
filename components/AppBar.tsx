@@ -12,12 +12,15 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  NavigationMenuViewport,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Source_Code_Pro } from "next/font/google";
+
 const inter = Montserrat({ subsets: ["latin"] });
 export const Appbar = () => {
   const session = useSession();
@@ -26,17 +29,18 @@ export const Appbar = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 flex justify-center border-b shadow-md sticky top-0 z-50">
-      <div className="max-w-screen-xl flex justify-between w-full">
+    <div className="bg-zinc-50   dark:bg-zinc-950 p-3 flex  backdrop-filter backdrop-blur-lg justify-center border-b shadow-md sticky top-0 z-50">
+      <div className="max-w-screen-xl  items-center flex justify-between w-full">
         <Link href={"/"}>
           <div
-            className={`dark:text-zinc-100 text-zinc-950 text-2xl ${inter.className} `}
+            className={`  flex  justify-center items-center dark:text-zinc-100 text-zinc-950 text-2xl ${inter.className} `}
           >
             Snippet<span className=" font-bold">ai</span>
           </div>
         </Link>
         <div className="flex items-center gap-2">
           <Button
+            className=" p-3 w-10 h-8"
             onClick={() => {
               router.push("/create");
             }}
@@ -44,6 +48,7 @@ export const Appbar = () => {
             <PlusIcon />
           </Button>
           <Button
+            className="hidden sm:block"
             variant={"link"}
             onClick={async () => {
               router.push("/snippets");
@@ -72,7 +77,7 @@ export const Appbar = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>
                     {" "}
-                    <Avatar>
+                    <Avatar className=" size-8">
                       <AvatarImage src={session.data?.user?.image} alt="@me" />
                       <AvatarFallback>
                         {session.data?.user?.image[0]}
@@ -80,25 +85,25 @@ export const Appbar = () => {
                     </Avatar>{" "}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="p-3  dark:bg-black flex flex-col dark:text-white ">
-                      <NavigationMenuLink className="p-2">
+                    <div className="  dark:bg-black  flex flex-col dark:text-white ">
+                      <NavigationMenuLink className="p-2 ">
                         signed in as{" "}
                         <span className=" text-sm font-bold">
                           {session.data?.user?.email}
                         </span>
                       </NavigationMenuLink>
 
-                      <NavigationMenuLink className="p-2">
+                      <NavigationMenuLink>
                         <Button variant={"link"} onClick={async () => {}}>
                           your snippets
                         </Button>
                       </NavigationMenuLink>
-                      <NavigationMenuLink className="p-2">
+                      <NavigationMenuLink>
                         <Button variant={"link"} onClick={async () => {}}>
                           Fav snippets
                         </Button>
                       </NavigationMenuLink>
-                      <NavigationMenuLink className="p-2">
+                      <NavigationMenuLink>
                         <Button
                           variant={"link"}
                           onClick={async () => {

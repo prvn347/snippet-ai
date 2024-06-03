@@ -34,7 +34,6 @@ export const authOption = {
               email: session.user.email,
               name: session.user.name,
               image: session.user.image,
-              password: "password",
             },
           });
           session.user.id = token.uid;

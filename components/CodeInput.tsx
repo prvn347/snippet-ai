@@ -1,6 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Input } from "./ui/input";
 
+import { Source_Code_Pro } from "next/font/google";
+import { cn } from "@/lib/utils";
+const textFont = Source_Code_Pro({
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
+
 export function CodeInput({
   onChange,
   onTitleChange,
@@ -23,10 +30,11 @@ export function CodeInput({
           />
         </div>
         <pre>
-          <code>
+          <code className={cn(" text-xs sm:text-sm", textFont.className)}>
             <textarea
               cols={80}
               rows={15}
+              placeholder=" Paste here"
               className="w-full h-full p-4 border border-input bg-transparent resize-none focus:outline-none"
               onChange={handleInputChange}
             ></textarea>

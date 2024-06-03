@@ -6,7 +6,7 @@ export default async function () {
   const getAllSnippets = await cache(findAllSnippets)();
 
   return (
-    <div>
+    <div className=" mt-10 min-h-screen">
       <SnippetTable snippets={getAllSnippets} />
     </div>
   );
