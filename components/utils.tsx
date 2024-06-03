@@ -75,11 +75,7 @@ export async function findAllSnippets() {
       fileName: true,
       code: true,
       createdAt: true,
-      url: {
-        select: {
-          url: true,
-        },
-      },
+      url: true,
       User: {
         select: {
           name: true,
@@ -95,14 +91,26 @@ export async function findAllSnippets() {
     user: snippet.User.name,
     createdAt: snippet.createdAt,
     image: snippet.User.image,
-    url: snippet.url.map((e) => {
-      url: e.url;
-    }),
+
     id: snippet.id,
   }));
+
   return final;
 }
-
+export async function getGistUrls() {
+  const session = await getServerSession(authOption);
+  const gistUrls = await prisma.gistUrl.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    select: {
+      url: true,
+      gistId: true,
+    },
+  });
+  console.log(gistUrls);
+  return gistUrls;
+}
 export async function createGistUrl(gistMeta: { url: string; gistId: number }) {
   const session = await getServerSession(authOption);
   const gisturl = await prisma.gistUrl.create({

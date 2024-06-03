@@ -9,7 +9,13 @@ import "highlight.js/styles/github-dark.css";
 import javascript from "highlight.js/lib/languages/javascript";
 import hljs from "highlight.js";
 import { useEffect } from "react";
+import { Poppins } from "next/font/google";
+import { cn } from "@/lib/utils";
 
+const btnFont = Poppins({
+  weight: ["400", "300"],
+  subsets: ["latin"],
+});
 export function SnippetTable({
   snippets,
 }: {
@@ -19,8 +25,10 @@ export function SnippetTable({
     user: string | null;
     createdAt: Date;
     image: string | null;
-    url: void[];
     id: number;
+    urls: {
+      url: string | null;
+    }[];
   }[];
 }) {
   hljs.registerLanguage("javascript", javascript);
@@ -29,26 +37,47 @@ export function SnippetTable({
   }, []);
 
   return (
-    <div>
-      <div className=" text-lg text-purple-600 p-8 flex items-center">
+    <div className="">
+      <div
+        className={cn(
+          " text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
+          btnFont.className
+        )}
+      >
         All Snippets <ArrowRightIcon />
       </div>
       <div>
         <div className="flex justify-center ">
-          <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center  h-screen gap-7">
+          <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center  gap-4">
             {snippets.map((e, id) => (
-              <div className=" flex flex-col  border border-purple-600">
+              <div className=" flex flex-col   rounded-md ">
                 <div>
-                  <div className=" p-3  ">
-                    <div className=" flex  gap-3">
-                      <Avatar>
+                  <div className=" p-2 ">
+                    <div className=" flex  gap-1">
+                      <Avatar className="size-8">
                         <AvatarImage src={e.image} alt="@me" />
                         <AvatarFallback>{e.user[0]}</AvatarFallback>
                       </Avatar>{" "}
-                      <div className=" flex justify-center items-center">
-                        {e.user} /{" "}
-                        <span className=" text-sm font-bPold font-mono text-purple-800">
-                          {e.fileName}
+                      <div className=" flex flex-col">
+                        <div
+                          className={cn(
+                            " flex justify-center items-center text-sm"
+                          )}
+                        >
+                          {e.user} /&nbsp;
+                          {e.urls.map((url, urlIndex) => (
+                            <Link
+                              key={urlIndex}
+                              href={url.url}
+                              className=" text-sm font-bPold font-bold text-primeryCol"
+                            >
+                              {e.fileName}
+                            </Link>
+                          ))}
+                        </div>
+                        <span className=" text-xs  font-extralight">
+                          {" "}
+                          created at {e.createdAt.toLocaleDateString()}
                         </span>
                       </div>
                     </div>
