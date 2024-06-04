@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, CodeIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { $Enums, Gist, GistUrl, User } from "@prisma/client";
 
@@ -11,6 +11,7 @@ import hljs from "highlight.js";
 import { useEffect } from "react";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Badge } from "./ui/badge";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -23,6 +24,7 @@ export function SnippetTable({
     code: string;
     fileName: string | null;
     user: string | null;
+    access: string;
     createdAt: Date;
     image: string | null;
     id: number;
@@ -40,11 +42,11 @@ export function SnippetTable({
     <div className="">
       <div
         className={cn(
-          " text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
+          " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
           btnFont.className
         )}
       >
-        All Snippets <ArrowRightIcon />
+        <CodeIcon /> Your Snippets
       </div>
       <div>
         <div className="flex justify-center ">
@@ -69,12 +71,20 @@ export function SnippetTable({
                             <Link
                               key={urlIndex}
                               href={url.url}
-                              className=" text-sm font-bPold font-bold text-primeryCol"
+                              className=" text-sm font-bold hover:underline text-primeryCol"
                             >
                               {e.fileName}
                             </Link>
-                          ))}
+                          ))}{" "}
+                          &nbsp;
+                          <Badge
+                            className=" h-4  w-13 border-primeryCol text-xs"
+                            variant="outline"
+                          >
+                            {e.access}
+                          </Badge>
                         </div>
+
                         <span className=" text-xs  font-extralight">
                           {" "}
                           created at {e.createdAt.toLocaleDateString()}

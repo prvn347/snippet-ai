@@ -22,6 +22,13 @@ import { createGistUrl } from "./utils";
 import { Poppins } from "next/font/google";
 import { Source_Code_Pro } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Badge } from "./ui/badge";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Comments } from "./Comments";
+import { CommentList } from "./CommentList";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -39,31 +46,63 @@ export function SnippetBlock({
   snippet: {
     id: number;
     code: string;
+    url: string;
     description: string | null;
     fileName: string | null;
+    access: string;
+    createdAt: Date;
+    comments: {
+      text: string;
+    }[];
     explaination: string | null;
     User: {
       name: string | null;
+      image: string | null;
     };
-  } | null;
+  };
 }) {
   hljs.registerLanguage("javascript", javascript);
   useEffect(() => {
     hljs.highlightAll();
   }, []);
   const { toast } = useToast();
-
+  const session = useSession();
+  const router = useRouter();
   return (
     <div className="flex justify-center mt-5 ">
       <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
         <div>
-          <div className="  ">
-            <span className={cn("text-md ", btnFont.className)}>
-              {snippet?.User.name} &nbsp;/{" "}
-            </span>
-            <span className=" text-sm  font-semibold text-purple-800">
-              {snippet?.fileName}
-            </span>
+          <div className=" flex gap-1 flex-col  pb-6 ">
+            <div className=" flex gap-1  items-center ">
+              <Avatar className="size-8">
+                <AvatarImage src={snippet?.User.image} alt="@me" />
+                <AvatarFallback>{snippet?.User.name[0]}</AvatarFallback>
+              </Avatar>{" "}
+              <div className=" flex flex-col">
+                <div>
+                  <span
+                    className={cn(
+                      "text-sm font-extralight ",
+                      btnFont.className
+                    )}
+                  >
+                    {snippet?.User.name} &nbsp;/{" "}
+                  </span>
+                  <Link
+                    ref={snippet?.url}
+                    className=" text-md  items-center pb-1 font-semibold hover:underline text-primeryCol"
+                    href={""}
+                  >
+                    {snippet?.fileName}
+                  </Link>
+                  <Badge variant="outline">{snippet?.access}</Badge>
+                </div>
+                <span className=" text-xs   font-extralight">
+                  {" "}
+                  created at {snippet?.createdAt.toLocaleDateString()}
+                </span>
+              </div>
+            </div>
           </div>
           <div className=" pb-2 text-lg  font-semibold text-neutral-300 bg-background rounded-md">
             {snippet?.description}
@@ -118,6 +157,39 @@ export function SnippetBlock({
                 }}
               />
             </article>
+          )}
+          {snippet.comments.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold">Comments:</h3>
+              <ul>
+                {snippet.comments.map((comment) => (
+                  <CommentList
+                    comment={comment.text}
+                    timestamp={snippet.createdAt}
+                    imageUrl={snippet.User.image}
+                    username={snippet.User.name}
+                  />
+                ))}
+              </ul>
+            </div>
+          )}
+          {session.data?.user ? (
+            <Comments gistId={snippet?.id} />
+          ) : (
+            <div className=" flex justify-center border rounded-md p-2     border-orange-950">
+              {" "}
+              <button
+                onClick={() => {
+                  router.push("/api/auth/signin");
+                }}
+                className=" rounded-md px-2 py-1 text-sm shadow-sm bg-green-600"
+              >
+                Login
+              </button>
+              <span className=" text-lg font-semibold ">
+                &nbsp;to join this conversation.
+              </span>{" "}
+            </div>
           )}
           <div className=" flex justify-center p-3">
             <Dialog>

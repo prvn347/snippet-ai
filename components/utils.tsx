@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 
 import { PrismaClient } from "@prisma/client";
 import Error from "next/error";
+import { access } from "fs";
 const prisma = new PrismaClient();
 
 export async function CreateSnippet(gistMeta: {
@@ -50,14 +51,24 @@ export async function getSnippet(id: number) {
         fileName: true,
         description: true,
         explaination: true,
+        access: true,
         code: true,
+        url: true,
+        createdAt: true,
+        comments: {
+          select: {
+            text: true,
+          },
+        },
         User: {
           select: {
             name: true,
+            image: true,
           },
         },
       },
     });
+
     return snippet;
   } catch (error: any) {
     return null;
@@ -74,6 +85,7 @@ export async function findAllSnippets() {
       id: true,
       fileName: true,
       code: true,
+      access: true,
       createdAt: true,
       url: true,
       User: {
@@ -89,6 +101,7 @@ export async function findAllSnippets() {
     code: snippet.code,
     fileName: snippet.fileName,
     user: snippet.User.name,
+    access: snippet.access,
     createdAt: snippet.createdAt,
     image: snippet.User.image,
 
@@ -123,4 +136,17 @@ export async function createGistUrl(gistMeta: { url: string; gistId: number }) {
   });
 
   return gisturl;
+}
+export async function createComment(gistId: number, comment: string) {
+  const session = await getServerSession(authOption);
+
+  const gistComment = await prisma.comment.create({
+    data: {
+      text: comment,
+      userId: session.user.id,
+      gistId: gistId,
+    },
+  });
+  console.log(gistComment);
+  return gistComment;
 }
