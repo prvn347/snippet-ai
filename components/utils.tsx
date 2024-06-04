@@ -58,6 +58,7 @@ export async function getSnippet(id: number) {
         comments: {
           select: {
             text: true,
+            User: true,
           },
         },
         User: {
@@ -121,7 +122,7 @@ export async function getGistUrls() {
       gistId: true,
     },
   });
-  console.log(gistUrls);
+
   return gistUrls;
 }
 export async function createGistUrl(gistMeta: { url: string; gistId: number }) {
@@ -147,6 +148,6 @@ export async function createComment(gistId: number, comment: string) {
       gistId: gistId,
     },
   });
-  console.log(gistComment);
+
   return gistComment;
 }

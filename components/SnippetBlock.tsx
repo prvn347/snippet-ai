@@ -53,6 +53,10 @@ export function SnippetBlock({
     createdAt: Date;
     comments: {
       text: string;
+      User: {
+        name: string;
+        image: string;
+      };
     }[];
     explaination: string | null;
     User: {
@@ -134,7 +138,7 @@ export function SnippetBlock({
                 📋 Copy code
               </button>
             </div>
-            <pre className="text-sm  text-wrap    ">
+            <pre className="text-sm  text-wrap">
               <code id="codeBlock" className="language-javascript block ">
                 {snippet?.code}
               </code>
@@ -166,8 +170,8 @@ export function SnippetBlock({
                   <CommentList
                     comment={comment.text}
                     timestamp={snippet.createdAt}
-                    imageUrl={snippet.User.image}
-                    username={snippet.User.name}
+                    imageUrl={comment.User.image}
+                    username={comment.User.name}
                   />
                 ))}
               </ul>
