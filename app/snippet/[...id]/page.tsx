@@ -6,11 +6,10 @@ interface props {
   params: { id: number };
 }
 export default async function ({ params }: props) {
-  console.log(params.id);
   const snippet = await getSnippet(Number(params.id));
 
   return (
-    <div className=" m-5">
+    <div className=" bg-bg dark:bg-background p-5 min-h-screen">
       <SnippetBlock snippet={snippet} />
     </div>
   );

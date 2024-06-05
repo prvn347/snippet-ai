@@ -3,7 +3,7 @@ import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github-dark.css";
 import { useEffect, useState } from "react";
-import { LucideShare } from "lucide-react";
+import { Divide, LucideShare } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +29,7 @@ import { Comments } from "./Comments";
 import { CommentList } from "./CommentList";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Spinner from "./Spinner";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -72,9 +73,10 @@ export function SnippetBlock({
   const { toast } = useToast();
   const session = useSession();
   const router = useRouter();
+
   return (
-    <div className="flex justify-center mt-5 ">
-      <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
+    <div className="flex justify-center mt-5  ">
+      <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
         <div>
           <div className=" flex gap-1 flex-col  pb-6 ">
             <div className=" flex gap-1  items-center ">
@@ -108,7 +110,7 @@ export function SnippetBlock({
               </div>
             </div>
           </div>
-          <div className=" pb-2 text-lg  font-semibold text-neutral-300 bg-background rounded-md">
+          <div className=" pb-2 text-lg  font-semibold text-black dark:text-neutral-300 dark:bg-background rounded-md">
             {snippet?.description}
           </div>
 
@@ -146,7 +148,7 @@ export function SnippetBlock({
           </div>
           <span
             className={cn(
-              " font-bold text-2xl mt-5 text-purple-600",
+              " font-bold text-xl pt-5 outline-black text-primeryCol",
               btnFont.className
             )}
           >
@@ -154,7 +156,12 @@ export function SnippetBlock({
             AI Explaination:
           </span>
           {snippet?.explaination && (
-            <article className="prose lg:prose-xl font-mono border border-purple-700 mt-3 p-3 max-w-3xl rounded-md bg-background">
+            <article
+              className={cn(
+                "prose lg:prose-xl font-mono border-purple-400  bg-opacity-50 bg-purple-500/10 backdrop-blur-md p-3 max-w-3xl sm:w-full rounded-md",
+                btnFont.className
+              )}
+            >
               <div
                 dangerouslySetInnerHTML={{
                   __html: snippet.explaination,
