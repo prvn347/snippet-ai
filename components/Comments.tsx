@@ -2,9 +2,11 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { createComment } from "./utils";
+import { useRouter } from "next/navigation";
 
 export const Comments = ({ gistId }: { gistId: number }) => {
   const [comment, setComment] = useState("");
+  const router = useRouter();
   const createComments = async (gistId: number, commentText: string) => {
     await createComment(gistId, commentText);
   };
@@ -23,7 +25,10 @@ export const Comments = ({ gistId }: { gistId: number }) => {
       ></textarea>
       <div className=" pt-2">
         <Button
-          onClick={async () => await createComment(gistId, comment)}
+          onClick={async () => {
+            await createComment(gistId, comment);
+            window.location.reload();
+          }}
           className=" bg-green-600 dark:bg-green-600"
         >
           Comment

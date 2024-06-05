@@ -151,3 +151,22 @@ export async function createComment(gistId: number, comment: string) {
 
   return gistComment;
 }
+
+export async function getComments(gistId: number) {
+  const comment = await prisma.comment.findMany({
+    where: {
+      gistId: gistId,
+    },
+    select: {
+      text: true,
+      User: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+      createdAt: true,
+    },
+  });
+  return comment;
+}

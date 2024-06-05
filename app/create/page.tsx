@@ -15,7 +15,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { PocketKnife, Sparkle } from "lucide-react";
+import { PocketKnife, Sparkle, Sparkles } from "lucide-react";
 import { CodeIcon } from "lucide-react";
 // or const { marked } = require('marked');
 const btnFont = Poppins({
@@ -36,14 +36,21 @@ export default function () {
     analyzedData: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-
+  const [created, setCreated] = useState(Boolean);
+  if (created) {
+    return (
+      <div className="flex justify-center  min-h-screen items-center">
+        <Spinner />
+      </div>
+    );
+  }
   return (
-    <div>
-      <div className=" flex justify-center  ">
+    <div className=" bg-bg dark:bg-background  min-h-screen ">
+      <div className=" flex justify-center p-5 sm:p-0 ">
         <div className="flex flex-col gap-4  pt-5">
           <Input
             type="text"
-            className=" bg-slate-800  active:outline-none"
+            className=" bg-gray-100 dark:bg-slate-800  active:outline-none"
             placeholder=" Snippet description..."
             onChange={(e) => {
               setGistMeta({ ...gistMeta, description: e.target.value });
@@ -66,7 +73,7 @@ export default function () {
                 setIsLoading(false);
               }}
             >
-              Explain Me &nbsp; <Sparkle />
+              Explain Me &nbsp; <Sparkles />
             </Button>
           </div>
           {isLoading ? (
@@ -74,12 +81,22 @@ export default function () {
               <Spinner />
             </div>
           ) : (
-            <article className="prose lg:prose-xl font-mono border-purple-400 bg-purple-500 bg-opacity-50 backdrop-blur-md p-3 max-w-3xl rounded-md">
+            <article
+              className={cn(
+                "prose lg:prose-xl font-mono border-purple-400  bg-opacity-50 bg-purple-500/10 backdrop-blur-md p-3 max-w-3xl sm:w-full rounded-md",
+                btnFont.className
+              )}
+            >
+              <div className=" text-right  align-top">
+                <span className=" text-xs opacity-90 align-text-top text-right">
+                  powered by Gemini
+                </span>
+              </div>
               <div
                 dangerouslySetInnerHTML={{
                   __html: gistMeta.analyzedData,
                 }}
-              />
+              />{" "}
             </article>
           )}
           <div className=" text-right">
@@ -93,6 +110,7 @@ export default function () {
                   gistMeta.description &&
                   gistMeta.fileName
                 ) {
+                  setCreated(true);
                   const resp = await CreateSnippet(gistMeta);
 
                   const id = resp.id;
@@ -119,6 +137,7 @@ export default function () {
                     ),
                   });
                 }
+                setCreated(false);
               }}
             >
               Create Snippet <CodeIcon />

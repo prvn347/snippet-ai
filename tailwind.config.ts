@@ -20,6 +20,12 @@ const config = {
     extend: {
       colors: {
         primeryCol: "#6D28D9",
+        or: "#F58B44",
+        cr: "#FDF5EB",
+        blackish: "#4B5161",
+        blueish: "#52B6DE",
+        bg: "#F0F9FF",
+        darkor: "#F06E1D",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

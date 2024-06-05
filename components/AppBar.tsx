@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Source_Code_Pro } from "next/font/google";
+import { QrCode, SquareCode, SquareFunction } from "lucide-react";
 
 const inter = Montserrat({ subsets: ["latin"] });
 export const Appbar = () => {
@@ -29,13 +30,13 @@ export const Appbar = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-zinc-50   dark:bg-zinc-950 p-3 flex  backdrop-filter backdrop-blur-lg justify-center border-b shadow-md sticky top-0 z-50">
+    <div className="bg-zinc-50   dark:bg-zinc-950 p-3 flex    justify-center border-b shadow-md sticky top-0 z-50">
       <div className="max-w-screen-xl  items-center flex justify-between w-full">
         <Link href={"/"}>
           <div
             className={`  flex  justify-center items-center dark:text-zinc-100 text-zinc-950 text-2xl ${inter.className} `}
           >
-            Snippet<span className=" font-bold">ai</span>
+            <SquareCode /> Snippet<span className=" font-bold">ai</span>
           </div>
         </Link>
         <div className="flex items-center gap-2">
