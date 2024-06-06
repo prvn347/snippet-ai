@@ -29,7 +29,6 @@ export const Comments = ({ gistId }: { gistId: number }) => {
             await createComment(gistId, comment);
             window.location.reload();
           }}
-          className=" bg-green-600 dark:bg-green-600"
         >
           Comment
         </Button>

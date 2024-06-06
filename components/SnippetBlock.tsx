@@ -4,6 +4,7 @@ import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github-dark.css";
 import { useEffect, useState } from "react";
 import { Divide, LucideShare } from "lucide-react";
+import { env } from "process";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +19,7 @@ import { Input } from "./ui/input";
 import { usePathname } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
-import { createGistUrl } from "./utils";
+import { createGistUrl, starSnippet, toggleStarred } from "./utils";
 import { Poppins } from "next/font/google";
 import { Source_Code_Pro } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ import { CommentList } from "./CommentList";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
+import { StarIcon } from "@radix-ui/react-icons";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -52,8 +54,12 @@ export function SnippetBlock({
     fileName: string | null;
     access: string;
     createdAt: Date;
+    Starred: {
+      starred: boolean;
+    }[];
     comments: {
       text: string;
+      createdAt: Date;
       User: {
         name: string;
         image: string;
@@ -63,6 +69,7 @@ export function SnippetBlock({
     User: {
       name: string | null;
       image: string | null;
+      id: string;
     };
   };
 }) {
@@ -71,20 +78,24 @@ export function SnippetBlock({
     hljs.highlightAll();
   }, []);
   const { toast } = useToast();
+  const path = usePathname();
   const session = useSession();
   const router = useRouter();
-
+  const [copied, isCopied] = useState(Boolean);
+  const [starred, setStarred] = useState(Boolean);
+  const baseurl = process.env.BASE_URL;
+  console.log(snippet.Starred.starred);
   return (
-    <div className="flex justify-center mt-5  ">
+    <div className="flex justify-center mt-5  max-h-full ">
       <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
         <div>
-          <div className=" flex gap-1 flex-col  pb-6 ">
+          <div className=" flex gap-1 justify-between  pb-6 ">
             <div className=" flex gap-1  items-center ">
               <Avatar className="size-8">
                 <AvatarImage src={snippet?.User.image} alt="@me" />
                 <AvatarFallback>{snippet?.User.name[0]}</AvatarFallback>
               </Avatar>{" "}
-              <div className=" flex flex-col">
+              <div className=" flex flex-col justify-center">
                 <div>
                   <span
                     className={cn(
@@ -109,6 +120,21 @@ export function SnippetBlock({
                 </span>
               </div>
             </div>
+            <button
+              onClick={async () => {
+                const star = await toggleStarred(snippet.User.id, snippet.id);
+                setStarred(star?.starred);
+              }}
+              className=" border  bg-slate-900 text-white p-2 flex  text-sm"
+            >
+              {" "}
+              {starred ? "Starred" : "Star"}
+              <StarIcon
+                className={cn(
+                  starred ? " fill-yellow-500 size-7 bg-yellow-800 " : "size-5"
+                )}
+              />
+            </button>
           </div>
           <div className=" pb-2 text-lg  font-semibold text-black dark:text-neutral-300 dark:bg-background rounded-md">
             {snippet?.description}
@@ -120,24 +146,22 @@ export function SnippetBlock({
                 {snippet?.fileName}
               </span>
               <button
-                id="copyButton"
+                id="copied_display_id"
                 className="text-xs font-semibold text-gray-400 btn-copy hover:text-gray-200"
                 data-clipboard-target="#codeBlock"
                 onClick={() => {
                   // @ts-ignore
                   navigator.clipboard.writeText(snippet?.code).then(() => {
                     // @ts-ignore
-                    document.getElementById(copied_display_id).style.display =
-                      "block";
+                    isCopied(true);
                     setTimeout(() => {
                       // @ts-ignore
-                      document.getElementById(copied_display_id).style.display =
-                        "none";
-                    }, 1000);
+                      isCopied(false);
+                    }, 8000);
                   });
                 }}
               >
-                📋 Copy code
+                {copied ? "copied!" : "📋 Copy code "}
               </button>
             </div>
             <pre className="text-sm  text-wrap">
@@ -146,15 +170,18 @@ export function SnippetBlock({
               </code>
             </pre>
           </div>
-          <span
-            className={cn(
-              " font-bold text-xl pt-5 outline-black text-primeryCol",
-              btnFont.className
-            )}
-          >
+          <div className=" p-3">
             {" "}
-            AI Explaination:
-          </span>
+            <span
+              className={cn(
+                " font-bold text-lg  pt-8 outline-black text-primeryCol",
+                btnFont.className
+              )}
+            >
+              AI Explaination:
+            </span>
+          </div>
+
           {snippet?.explaination && (
             <article
               className={cn(
@@ -162,21 +189,27 @@ export function SnippetBlock({
                 btnFont.className
               )}
             >
+              <div className=" text-right  align-top">
+                <span className=" text-xs opacity-90 align-text-top text-right">
+                  powered by Gemini
+                </span>
+              </div>
               <div
                 dangerouslySetInnerHTML={{
                   __html: snippet.explaination,
                 }}
-              />
+              />{" "}
             </article>
           )}
           {snippet.comments.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">Comments:</h3>
+              <h3 className="text-lg  p-3 font-semibold">Comments:</h3>
               <ul>
-                {snippet.comments.map((comment) => (
+                {snippet.comments.map((comment, id) => (
                   <CommentList
                     comment={comment.text}
-                    timestamp={snippet.createdAt}
+                    id={id}
+                    timestamp={comment.createdAt}
                     imageUrl={comment.User.image}
                     username={comment.User.name}
                   />
@@ -214,13 +247,13 @@ export function SnippetBlock({
                   <DialogTitle>Copy the url!</DialogTitle>
                 </DialogHeader>
                 <div>
-                  <Input type="text" disabled value={window.location.href} />
+                  <Input type="text" disabled value={`${baseurl}/${path}`} />
                 </div>
                 <DialogFooter>
                   <Button
                     type="submit"
                     onClick={() => {
-                      navigator.clipboard.writeText(window.location.href);
+                      navigator.clipboard.writeText(`${baseurl}/${path}`);
                       toast({
                         title: "copied!",
 

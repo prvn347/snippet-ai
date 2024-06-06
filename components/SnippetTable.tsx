@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
+import { format } from "date-fns";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -39,7 +40,7 @@ export function SnippetTable({
   }, []);
 
   return (
-    <div className="">
+    <div className="p-8 m-10 ">
       <div
         className={cn(
           " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
@@ -87,7 +88,8 @@ export function SnippetTable({
 
                         <span className=" text-xs  font-extralight">
                           {" "}
-                          created at {e.createdAt.toLocaleDateString()}
+                          created at{" "}
+                          {format(new Date(e.createdAt), "MM/dd/yyyy")}
                         </span>
                       </div>
                     </div>

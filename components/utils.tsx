@@ -55,14 +55,21 @@ export async function getSnippet(id: number) {
         code: true,
         url: true,
         createdAt: true,
+        Starred: {
+          select: {
+            starred: true,
+          },
+        },
         comments: {
           select: {
             text: true,
             User: true,
+            createdAt: true,
           },
         },
         User: {
           select: {
+            id: true,
             name: true,
             image: true,
           },
@@ -169,4 +176,45 @@ export async function getComments(gistId: number) {
     },
   });
   return comment;
+}
+
+export async function toggleStarred(userId: string, gistId: number) {
+  try {
+    // Retrieve the current starred record
+    const currentStarred = await prisma.starred.findFirst({
+      where: {
+        userId: userId,
+        gistId: gistId,
+      },
+    });
+    console.log(currentStarred);
+    if (currentStarred) {
+      // Update the starred field to the opposite value
+      const updatedStarred = await prisma.starred.update({
+        where: {
+          id: currentStarred.id,
+        },
+        data: {
+          starred: !currentStarred.starred,
+        },
+      });
+      console.log("Starred status toggled:", updatedStarred);
+      return updatedStarred;
+    } else {
+      const createStarred = await prisma.starred.create({
+        data: {
+          starred: true,
+          gistId: gistId,
+          userId: userId,
+        },
+      });
+
+      console.log("Starred record not found. so created new.", createStarred);
+      return createStarred;
+    }
+  } catch (error) {
+    console.error("Error toggling starred status:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }

@@ -6,6 +6,7 @@ export function CommentList({
   imageUrl,
   username,
 }: {
+  id: number;
   comment: string;
   timestamp: Date;
   imageUrl: string;
@@ -22,9 +23,9 @@ export function CommentList({
             </Avatar>{" "}
           </div>
           <div className=" flex flex-col w-full border rounded-md  border-blue-950  text-wrap text-left">
-            <span className="text-xs text-neutral-400 font-extralight border  border-blue-950 p-2">
+            <span className="text-xs  text-neutral-900 dark:text-neutral-400 font-extralight  border-b  border-b-blue-950 p-2">
               {" "}
-              <span className=" text-sm font-semibold text-white">
+              <span className=" text-sm font-semibold   text-black dark:text-white ">
                 {username}
               </span>{" "}
               created at:{timestamp.toLocaleString()}{" "}

@@ -9,7 +9,7 @@ export default async function SnippetPage() {
   const mergedData = mergeSnippetsWithUrls(getAllSnippets, getAllGistUrls);
 
   return (
-    <div className="bg-gray-100 dark:bg-background">
+    <div className="bg-gray-100  dark:bg-background">
       <SnippetTable snippets={mergedData} />
     </div>
   );

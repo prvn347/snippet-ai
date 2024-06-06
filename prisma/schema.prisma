@@ -23,6 +23,7 @@ model User{
   Gist  Gist[]
   GistUrl GistUrl[]
     Comments  Comment[]
+    Starred  Starred[]
   createAt DateTime @default(now())
 
 
@@ -40,9 +41,11 @@ model Gist {
   url GistUrl[]
   User User @relation(fields: [userId],references: [id])
    comments     Comment[]
+   Starred Starred[]
   createdAt          DateTime         @default(now())
 
 }
+
 model GistUrl{
   id Int @id @default(autoincrement())
   userId String
@@ -51,6 +54,7 @@ model GistUrl{
   Gist Gist @relation(fields: [gistId],references: [id])
   url String?
   createdAt DateTime @default(now())
+  
   Access Access
 }
 
@@ -62,6 +66,16 @@ model Comment {
   User      User     @relation(fields: [userId],references: [id])
   Gist      Gist     @relation(fields: [gistId],references: [id])
   createdAt DateTime @default(now())
+}
+
+model Starred {
+  id Int @id @default(autoincrement())
+  gistId Int
+  userId String
+  starred Boolean @default(false)
+  Gist Gist  @relation(fields: [gistId] , references: [id])
+  User User @relation(fields: [userId] , references: [id])
+  
 }
 enum Access{
     Private

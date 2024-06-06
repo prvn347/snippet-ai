@@ -95,13 +95,23 @@ export const Appbar = () => {
                       </NavigationMenuLink>
 
                       <NavigationMenuLink>
-                        <Button variant={"link"} onClick={async () => {}}>
-                          your snippets
+                        <Button
+                          variant={"link"}
+                          onClick={async () => {
+                            router.push("/snippets");
+                          }}
+                        >
+                          Your Snippets
                         </Button>
                       </NavigationMenuLink>
                       <NavigationMenuLink>
-                        <Button variant={"link"} onClick={async () => {}}>
-                          Fav snippets
+                        <Button
+                          variant={"link"}
+                          onClick={async () => {
+                            router.push("/starred");
+                          }}
+                        >
+                          Starred Snippets
                         </Button>
                       </NavigationMenuLink>
                       <NavigationMenuLink>
