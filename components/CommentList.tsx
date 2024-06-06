@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export function CommentList({
@@ -28,7 +29,7 @@ export function CommentList({
               <span className=" text-sm font-semibold   text-black dark:text-white ">
                 {username}
               </span>{" "}
-              created at:{timestamp.toLocaleString()}{" "}
+              created at: {format(new Date(timestamp), "MM/dd/yyyy")}
             </span>
             <span className=" text-sm p-5">{comment}</span>
           </div>

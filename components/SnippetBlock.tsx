@@ -32,6 +32,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
 import { StarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -84,12 +85,15 @@ export function SnippetBlock({
   const [copied, isCopied] = useState(Boolean);
   const [starred, setStarred] = useState(Boolean);
   const baseurl = process.env.BASE_URL;
-  console.log(snippet.Starred.starred);
+  useEffect(() => {
+    setStarred(snippet.Starred[0].starred);
+  }, []);
+
   return (
     <div className="flex justify-center mt-5  max-h-full ">
       <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
         <div>
-          <div className=" flex gap-1 justify-between  pb-6 ">
+          <div className=" flex  justify-between  pb-3 ">
             <div className=" flex gap-1  items-center ">
               <Avatar className="size-8">
                 <AvatarImage src={snippet?.User.image} alt="@me" />
@@ -116,24 +120,38 @@ export function SnippetBlock({
                 </div>
                 <span className=" text-xs   font-extralight">
                   {" "}
-                  created at {snippet?.createdAt.toLocaleDateString()}
+                  created at {format(new Date(snippet.createdAt), "MM/dd/yyyy")}
                 </span>
               </div>
             </div>
             <button
               onClick={async () => {
                 const star = await toggleStarred(snippet.User.id, snippet.id);
-                setStarred(star?.starred);
+                if (star?.starred) {
+                  setStarred(true);
+                } else {
+                  setStarred(false);
+                }
               }}
-              className=" border  bg-slate-900 text-white p-2 flex  text-sm"
+              className=" border border-neutral-500 rounded-md  bg-slate-500 dark:bg-slate-700 text-white justify-center  items-center h-7 w-20 flex  text-xs"
             >
               {" "}
-              {starred ? "Starred" : "Star"}
-              <StarIcon
-                className={cn(
-                  starred ? " fill-yellow-500 size-7 bg-yellow-800 " : "size-5"
-                )}
-              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className={cn(starred ? " fill-yellow-600 size-4" : "size-4")}
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                />
+              </svg>
+              &nbsp;
+              {starred ? "Unstar" : "Star"}
             </button>
           </div>
           <div className=" pb-2 text-lg  font-semibold text-black dark:text-neutral-300 dark:bg-background rounded-md">
