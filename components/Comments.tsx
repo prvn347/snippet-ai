@@ -21,7 +21,7 @@ export const Comments = ({ gistId }: { gistId: number }) => {
           setComment(e.target.value);
         }}
         placeholder="leave comment"
-        className="w-full h-full p-4 border  rounded-md border-input bg-transparent resize-none focus:outline-none"
+        className="w-full h-full p-4 border  rounded-md border-input  resize-none focus:outline-none"
       ></textarea>
       <div className=" pt-2">
         <Button

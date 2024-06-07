@@ -27,6 +27,7 @@ export function CodeInput({
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder="File name with extension. "
             className=" w-30"
+            maxLength={12}
           />
         </div>
         <pre>

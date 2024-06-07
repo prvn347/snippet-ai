@@ -40,18 +40,10 @@ export function SnippetTable({
   }, []);
 
   return (
-    <div className="p-8 m-10 ">
-      <div
-        className={cn(
-          " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
-          btnFont.className
-        )}
-      >
-        <CodeIcon /> Your Snippets
-      </div>
+    <div className=" ">
       <div>
         <div className="flex justify-center ">
-          <div className="bg-gray-100 dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center  gap-4">
+          <div className="bg-bg dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center  gap-4">
             {snippets.map((e, id) => (
               <div className=" flex flex-col   rounded-md ">
                 <div>

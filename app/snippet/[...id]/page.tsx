@@ -12,7 +12,7 @@ export default async function ({ params }: props) {
   const snippet = await getSnippet(Number(params.id));
   const session = await getServerSession(authOption);
   return (
-    <div className=" bg-bg dark:bg-background p-5 min-h-screen">
+    <div className="  bg-bg dark:bg-background p-5   min-h-screen">
       {session.user.id ? (
         <SnippetBlock snippet={snippet} />
       ) : (

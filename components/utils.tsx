@@ -177,6 +177,44 @@ export async function getComments(gistId: number) {
   });
   return comment;
 }
+export async function getStarred() {
+  const session = await getServerSession(authOption);
+  const starred = await prisma.starred.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    select: {
+      Gist: {
+        select: {
+          id: true,
+          fileName: true,
+          code: true,
+          access: true,
+          createdAt: true,
+          url: true,
+          User: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  const final = starred.map((snippet) => ({
+    code: snippet.Gist.code,
+    fileName: snippet.Gist.fileName,
+    user: snippet.Gist.User.name,
+    access: snippet.Gist.access,
+    createdAt: snippet.Gist.createdAt,
+    image: snippet.Gist.User.image,
+
+    id: snippet.Gist.id,
+  }));
+
+  return final;
+}
 
 export async function toggleStarred(userId: string, gistId: number) {
   try {

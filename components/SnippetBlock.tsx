@@ -86,12 +86,12 @@ export function SnippetBlock({
   const [starred, setStarred] = useState(Boolean);
   const baseurl = process.env.BASE_URL;
   useEffect(() => {
-    setStarred(snippet.Starred[0].starred);
+    setStarred(snippet?.Starred[0]?.starred);
   }, []);
 
   return (
-    <div className="flex justify-center mt-5  max-h-full ">
-      <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center  h-screen gap-7">
+    <div className="flex justify-center mt-5     ">
+      <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center   gap-7">
         <div>
           <div className=" flex  justify-between  pb-3 ">
             <div className=" flex gap-1  items-center ">
@@ -99,7 +99,7 @@ export function SnippetBlock({
                 <AvatarImage src={snippet?.User.image} alt="@me" />
                 <AvatarFallback>{snippet?.User.name[0]}</AvatarFallback>
               </Avatar>{" "}
-              <div className=" flex flex-col justify-center">
+              <div className=" flex flex-col justify-center  ">
                 <div>
                   <span
                     className={cn(
@@ -107,11 +107,11 @@ export function SnippetBlock({
                       btnFont.className
                     )}
                   >
-                    {snippet?.User.name} &nbsp;/{" "}
+                    {snippet?.User.name}/&nbsp;
                   </span>
                   <Link
                     ref={snippet?.url}
-                    className=" text-md  items-center pb-1 font-semibold hover:underline text-primeryCol"
+                    className=" text-sm  items-center pb-1 font-semibold hover:underline text-primeryCol"
                     href={""}
                   >
                     {snippet?.fileName}
@@ -133,7 +133,7 @@ export function SnippetBlock({
                   setStarred(false);
                 }
               }}
-              className=" border border-neutral-500 rounded-md  bg-slate-500 dark:bg-slate-700 text-white justify-center  items-center h-7 w-20 flex  text-xs"
+              className=" border border-neutral-500 rounded-md  bg-slate-500 dark:bg-slate-700 text-white justify-center  items-center h-7 w-10  sm:h-7 sm:w-20 flex  text-xs"
             >
               {" "}
               <svg
@@ -151,7 +151,9 @@ export function SnippetBlock({
                 />
               </svg>
               &nbsp;
-              {starred ? "Unstar" : "Star"}
+              <span className=" hidden sm:block">
+                {starred ? "Unstar" : "Star"}
+              </span>
             </button>
           </div>
           <div className=" pb-2 text-lg  font-semibold text-black dark:text-neutral-300 dark:bg-background rounded-md">

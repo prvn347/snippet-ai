@@ -1,15 +1,41 @@
-import { StarIcon } from "lucide-react";
-
+import { SnippetTable } from "@/components/SnippetTable";
+import { getGistUrls, getStarred } from "@/components/utils";
+import { authOption } from "@/lib/authoption";
+import { cn } from "@/lib/utils";
+import { CodeIcon, StarIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { Poppins } from "next/font/google";
+import { cache } from "react";
+const btnFont = Poppins({
+  weight: ["400", "300"],
+  subsets: ["latin"],
+});
 export default async function StarredSnippets() {
+  const session = await getServerSession(authOption);
+  const starred = await cache(getStarred)();
+  const getAllGistUrls = await cache(getGistUrls)();
+  const mergedData = mergeSnippetsWithUrls(starred, getAllGistUrls);
+
   return (
     <div>
-      <span className=" text-lg font-bold p-3 ">
-        {" "}
-        Starred Snippets <StarIcon />{" "}
-      </span>
-      <div className=" ">
-        <span> no snipperts</span>
+      <div className=" bg-bg dark:bg-background">
+        <div
+          className={cn(
+            " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
+            btnFont.className
+          )}
+        >
+          <StarIcon /> Starred Snippets
+        </div>
+        <SnippetTable snippets={mergedData} />
       </div>
     </div>
   );
+}
+
+function mergeSnippetsWithUrls(snippets, urls) {
+  return snippets.map((snippet) => ({
+    ...snippet,
+    urls: urls.filter((url) => url.gistId === snippet.id),
+  }));
 }
