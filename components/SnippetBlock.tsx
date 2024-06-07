@@ -19,7 +19,7 @@ import { Input } from "./ui/input";
 import { usePathname } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
-import { createGistUrl, starSnippet, toggleStarred } from "./utils";
+import { toggleStarred } from "./utils";
 import { Poppins } from "next/font/google";
 import { Source_Code_Pro } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ import { CommentList } from "./CommentList";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
-import { StarIcon } from "@radix-ui/react-icons";
+
 import { format } from "date-fns";
 
 const btnFont = Poppins({
@@ -87,7 +87,7 @@ export function SnippetBlock({
   const baseurl = process.env.BASE_URL;
   useEffect(() => {
     setStarred(snippet?.Starred[0]?.starred);
-  }, []);
+  }, [snippet?.Starred]);
 
   return (
     <div className="flex justify-center mt-5     ">
@@ -96,7 +96,9 @@ export function SnippetBlock({
           <div className=" flex  justify-between  pb-3 ">
             <div className=" flex gap-1  items-center ">
               <Avatar className="size-8">
+                {/* @ts-ignore */}
                 <AvatarImage src={snippet?.User.image} alt="@me" />
+                {/* @ts-ignore */}
                 <AvatarFallback>{snippet?.User.name[0]}</AvatarFallback>
               </Avatar>{" "}
               <div className=" flex flex-col justify-center  ">
@@ -227,6 +229,7 @@ export function SnippetBlock({
               <ul>
                 {snippet.comments.map((comment, id) => (
                   <CommentList
+                    key={id}
                     comment={comment.text}
                     id={id}
                     timestamp={comment.createdAt}

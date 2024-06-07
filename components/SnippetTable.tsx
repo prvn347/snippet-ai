@@ -24,13 +24,13 @@ export function SnippetTable({
   snippets: {
     code: string;
     fileName: string | null;
-    user: string | null;
+    user: string;
     access: string;
     createdAt: Date;
-    image: string | null;
+    image: string;
     id: number;
     urls: {
-      url: string | null;
+      url: string;
     }[];
   }[];
 }) {
@@ -40,12 +40,12 @@ export function SnippetTable({
   }, []);
 
   return (
-    <div className=" ">
+    <div className="  px-8">
       <div>
-        <div className="flex justify-center ">
-          <div className="bg-bg dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center  gap-4">
+        <div className="flex justify-center">
+          <div className="bg-bg dark:bg-background  max-w-3xl   lg:mx-0 flex flex-col justify-center  gap-4">
             {snippets.map((e, id) => (
-              <div className=" flex flex-col   rounded-md ">
+              <div key={id} className=" flex flex-col   rounded-md ">
                 <div>
                   <div className=" p-2 ">
                     <div className=" flex  gap-1">
@@ -80,8 +80,7 @@ export function SnippetTable({
 
                         <span className=" text-xs  font-extralight">
                           {" "}
-                          created at{" "}
-                          {format(new Date(e.createdAt), "MM/dd/yyyy")}
+                          created at {e.createdAt.getTime()}
                         </span>
                       </div>
                     </div>

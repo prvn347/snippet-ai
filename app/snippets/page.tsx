@@ -16,7 +16,7 @@ export default async function SnippetPage() {
   const mergedData = mergeSnippetsWithUrls(getAllSnippets, getAllGistUrls);
 
   return (
-    <div className="bg-bg  dark:bg-background">
+    <div className="bg-bg   dark:bg-background">
       <div
         className={cn(
           " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
@@ -30,7 +30,7 @@ export default async function SnippetPage() {
   );
 }
 
-function mergeSnippetsWithUrls(snippets, urls) {
+function mergeSnippetsWithUrls(snippets: any[], urls: any[]) {
   return snippets.map((snippet) => ({
     ...snippet,
     urls: urls.filter((url) => url.gistId === snippet.id),

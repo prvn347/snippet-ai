@@ -1,5 +1,5 @@
 "use client";
-import CodeBlock from "@/components/CodeBlock";
+
 import { CodeInput } from "@/components/CodeInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ interface Choice {
   id: string;
   content: string;
 }
-export default function () {
+function Page() {
   const { toast } = useToast();
   const router = useRouter();
   const [gistMeta, setGistMeta] = useState({
@@ -113,7 +113,7 @@ export default function () {
                   setCreated(true);
                   const resp = await CreateSnippet(gistMeta);
 
-                  const id = resp.id;
+                  const id = resp?.id;
                   if (id) {
                     router.push(`/snippet/${id}`);
                   } else {
@@ -157,3 +157,5 @@ export default function () {
     </div>
   );
 }
+
+export default Page;

@@ -79,8 +79,10 @@ export const Appbar = () => {
                   <NavigationMenuTrigger>
                     {" "}
                     <Avatar className=" size-8">
+                      {/* @ts-ignore */}
                       <AvatarImage src={session.data?.user?.image} alt="@me" />
                       <AvatarFallback>
+                        {/* @ts-ignore */}
                         {session.data?.user?.image[0]}
                       </AvatarFallback>
                     </Avatar>{" "}

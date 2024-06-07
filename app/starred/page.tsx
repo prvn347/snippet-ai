@@ -33,7 +33,7 @@ export default async function StarredSnippets() {
   );
 }
 
-function mergeSnippetsWithUrls(snippets, urls) {
+function mergeSnippetsWithUrls(snippets: any[], urls: any[]) {
   return snippets.map((snippet) => ({
     ...snippet,
     urls: urls.filter((url) => url.gistId === snippet.id),

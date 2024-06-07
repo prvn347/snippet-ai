@@ -8,12 +8,13 @@ import { getServerSession } from "next-auth";
 interface props {
   params: { id: number };
 }
-export default async function ({ params }: props) {
+async function Page({ params }: props) {
   const snippet = await getSnippet(Number(params.id));
   const session = await getServerSession(authOption);
   return (
     <div className="  bg-bg dark:bg-background p-5   min-h-screen">
       {session.user.id ? (
+        // @ts-ignore
         <SnippetBlock snippet={snippet} />
       ) : (
         <div className=" flex flex-col justify-center items-center">
@@ -24,3 +25,4 @@ export default async function ({ params }: props) {
     </div>
   );
 }
+export default Page;
