@@ -42,6 +42,7 @@ export async function CreateSnippet(gistMeta: {
 
 export async function getSnippet(id: number) {
   try {
+    console.log(" from get snippet funtion " + id);
     const snippet = await prisma.gist.findFirst({
       where: {
         id: id,
@@ -55,11 +56,7 @@ export async function getSnippet(id: number) {
         code: true,
         url: true,
         createdAt: true,
-        Starred: {
-          select: {
-            starred: true,
-          },
-        },
+        starred: true,
         comments: {
           select: {
             text: true,
@@ -76,7 +73,7 @@ export async function getSnippet(id: number) {
         },
       },
     });
-
+    console.log(snippet);
     return snippet;
   } catch (error: any) {
     return null;
@@ -177,82 +174,111 @@ export async function getComments(gistId: number) {
   });
   return comment;
 }
+
+export async function toggleStarred(id: number) {
+  try {
+    const checkStarred = await prisma.gist.findFirst({
+      where: {
+        id: id,
+      },
+      select: {
+        starred: true,
+      },
+    });
+
+    if (checkStarred) {
+      const starred = await prisma.gist.update({
+        where: {
+          id: id,
+        },
+        data: {
+          starred: !checkStarred?.starred,
+        },
+        select: {
+          starred: true,
+        },
+      });
+      return starred;
+    } else {
+    }
+    return checkStarred;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getStarred() {
   const session = await getServerSession(authOption);
-  const starred = await prisma.starred.findMany({
+  const starred = await prisma.gist.findMany({
     where: {
       userId: session.user.id,
+      starred: true,
     },
     select: {
-      Gist: {
+      id: true,
+      fileName: true,
+      code: true,
+      access: true,
+      createdAt: true,
+      url: true,
+      User: {
         select: {
-          id: true,
-          fileName: true,
-          code: true,
-          access: true,
-          createdAt: true,
-          url: true,
-          User: {
-            select: {
-              name: true,
-              image: true,
-            },
-          },
+          name: true,
+          image: true,
         },
       },
     },
   });
   const final = starred.map((snippet) => ({
-    code: snippet.Gist.code,
-    fileName: snippet.Gist.fileName,
-    user: snippet.Gist.User.name,
-    access: snippet.Gist.access,
-    createdAt: snippet.Gist.createdAt,
-    image: snippet.Gist.User.image,
+    code: snippet.code,
+    fileName: snippet.fileName,
+    user: snippet.User.name,
+    access: snippet.access,
+    createdAt: snippet.createdAt,
+    image: snippet.User.image,
 
-    id: snippet.Gist.id,
+    id: snippet.id,
   }));
 
   return final;
 }
 
-export async function toggleStarred(userId: string, gistId: number) {
-  try {
-    // Retrieve the current starred record
-    const currentStarred = await prisma.starred.findFirst({
-      where: {
-        userId: userId,
-        gistId: gistId,
-      },
-    });
-    console.log(currentStarred);
-    if (currentStarred) {
-      // Update the starred field to the opposite value
-      const updatedStarred = await prisma.starred.update({
-        where: {
-          id: currentStarred.id,
-        },
-        data: {
-          starred: !currentStarred.starred,
-        },
-      });
-      console.log("Starred status toggled:", updatedStarred);
-      return updatedStarred;
-    } else {
-      const createStarred = await prisma.starred.create({
-        data: {
-          starred: true,
-          gistId: gistId,
-          userId: userId,
-        },
-      });
+// export async function toggleStarred(userId: string, gistId: number) {
+//   try {
+//     // Retrieve the current starred record
+//     const currentStarred = await prisma.starred.findFirst({
+//       where: {
+//         userId: userId,
+//         gistId: gistId,
+//       },
+//     });
+//     console.log(currentStarred);
+//     if (currentStarred) {
+//       // Update the starred field to the opposite value
+//       const updatedStarred = await prisma.starred.update({
+//         where: {
+//           id: currentStarred.id,
+//         },
+//         data: {
+//           starred: !currentStarred.starred,
+//         },
+//       });
+//       console.log("Starred status toggled:", updatedStarred);
+//       return updatedStarred;
+//     } else {
+//       const createStarred = await prisma.starred.create({
+//         data: {
+//           starred: true,
+//           gistId: gistId,
+//           userId: userId,
+//         },
+//       });
 
-      console.log("Starred record not found. so created new.", createStarred);
-      return createStarred;
-    }
-  } catch (error) {
-    console.error("Error toggling starred status:", error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+//       console.log("Starred record not found. so created new.", createStarred);
+//       return createStarred;
+//     }
+//   } catch (error) {
+//     console.error("Error toggling starred status:", error);
+//   } finally {
+//     await prisma.$disconnect();
+//   }

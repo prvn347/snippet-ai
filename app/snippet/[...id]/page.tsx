@@ -9,7 +9,9 @@ interface props {
   params: { id: number };
 }
 async function Page({ params }: props) {
+  console.log(params.id);
   const snippet = await getSnippet(Number(params.id));
+  console.log(snippet);
   const session = await getServerSession(authOption);
   return (
     <div className="  bg-bg dark:bg-background p-5   min-h-screen">

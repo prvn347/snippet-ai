@@ -80,7 +80,7 @@ export function SnippetTable({
 
                         <span className=" text-xs  font-extralight">
                           {" "}
-                          created at {e.createdAt.getTime()}
+                          created at {e.createdAt.toLocaleString()}
                         </span>
                       </div>
                     </div>

@@ -11,14 +11,13 @@ const btnFont = Poppins({
   subsets: ["latin"],
 });
 export default async function StarredSnippets() {
-  const session = await getServerSession(authOption);
   const starred = await cache(getStarred)();
   const getAllGistUrls = await cache(getGistUrls)();
   const mergedData = mergeSnippetsWithUrls(starred, getAllGistUrls);
 
   return (
     <div>
-      <div className=" bg-bg dark:bg-background">
+      <div className=" bg-bg dark:bg-background min-h-screen">
         <div
           className={cn(
             " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",

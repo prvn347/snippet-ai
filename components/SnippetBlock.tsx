@@ -19,7 +19,7 @@ import { Input } from "./ui/input";
 import { usePathname } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
-import { toggleStarred } from "./utils";
+// import { toggleStarred } from "./utils";
 import { Poppins } from "next/font/google";
 import { Source_Code_Pro } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -33,6 +33,7 @@ import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
 
 import { format } from "date-fns";
+import { toggleStarred } from "./utils";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -55,9 +56,7 @@ export function SnippetBlock({
     fileName: string | null;
     access: string;
     createdAt: Date;
-    Starred: {
-      starred: boolean;
-    }[];
+    starred: boolean;
     comments: {
       text: string;
       createdAt: Date;
@@ -86,8 +85,8 @@ export function SnippetBlock({
   const [starred, setStarred] = useState(Boolean);
   const baseurl = process.env.BASE_URL;
   useEffect(() => {
-    setStarred(snippet?.Starred[0]?.starred);
-  }, [snippet?.Starred]);
+    setStarred(snippet.starred);
+  }, [snippet.starred]);
 
   return (
     <div className="flex justify-center mt-5     ">
@@ -128,7 +127,7 @@ export function SnippetBlock({
             </div>
             <button
               onClick={async () => {
-                const star = await toggleStarred(snippet.User.id, snippet.id);
+                const star = await toggleStarred(snippet.id);
                 if (star?.starred) {
                   setStarred(true);
                 } else {

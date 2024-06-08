@@ -16,7 +16,7 @@ export default async function SnippetPage() {
   const mergedData = mergeSnippetsWithUrls(getAllSnippets, getAllGistUrls);
 
   return (
-    <div className="bg-bg   dark:bg-background">
+    <div className="bg-bg   dark:bg-background  min-h-screen">
       <div
         className={cn(
           " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",
@@ -25,7 +25,11 @@ export default async function SnippetPage() {
       >
         <CodeIcon /> Your Snippets
       </div>
-      <SnippetTable snippets={mergedData} />
+      {getAllSnippets ? (
+        <SnippetTable snippets={mergedData} />
+      ) : (
+        "You have no snippets."
+      )}
     </div>
   );
 }
