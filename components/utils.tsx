@@ -27,7 +27,7 @@ export async function CreateSnippet(gistMeta: {
     });
     const gisturl = await prisma.gistUrl.create({
       data: {
-        url: `http://localhost:3000/snippet/${snippet.id}`,
+        url: `https://snippetai-xi.vercel.app/${snippet.id}`,
         userId: session.user.id,
         Access: "Public",
         gistId: snippet.id,

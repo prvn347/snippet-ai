@@ -8,7 +8,7 @@ import { $Enums, Gist, GistUrl, User } from "@prisma/client";
 import "highlight.js/styles/github-dark.css";
 import javascript from "highlight.js/lib/languages/javascript";
 import hljs from "highlight.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
@@ -38,12 +38,13 @@ export function SnippetTable({
   useEffect(() => {
     hljs.highlightAll();
   }, []);
+  const [copied, isCopied] = useState(Boolean);
 
   return (
-    <div className="  px-8">
+    <div className=" w-full ">
       <div>
-        <div className="flex justify-center">
-          <div className="bg-bg dark:bg-background  max-w-3xl   lg:mx-0 flex flex-col justify-center  gap-4">
+        <div className="flex justify-center ">
+          <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center   gap-4">
             {snippets.map((e, id) => (
               <div key={id} className=" flex flex-col   rounded-md ">
                 <div>
@@ -101,10 +102,17 @@ export function SnippetTable({
                       data-clipboard-target="#codeBlock"
                       onClick={() => {
                         // @ts-ignore
-                        navigator.clipboard.writeText(e.code);
+                        navigator.clipboard.writeText(e.code).then(() => {
+                          // @ts-ignore
+                          isCopied(true);
+                          setTimeout(() => {
+                            // @ts-ignore
+                            isCopied(false);
+                          }, 8000);
+                        });
                       }}
                     >
-                      📋 Copy code
+                      {copied ? "copied" : "📋 Copy code"}
                     </button>
                   </div>
                   <pre className="text-sm  text-wrap    ">
