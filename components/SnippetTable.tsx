@@ -41,10 +41,10 @@ export function SnippetTable({
   const [copied, isCopied] = useState(Boolean);
 
   return (
-    <div className=" w-full ">
+    <div className="  ">
       <div>
         <div className="flex justify-center ">
-          <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex justify-center   gap-4">
+          <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center   gap-4">
             {snippets.map((e, id) => (
               <div key={id} className=" flex flex-col   rounded-md ">
                 <div>
