@@ -97,6 +97,7 @@ export function SnippetTable({
                       {e.fileName}
                     </span>
                     <button
+                      key={id}
                       id="copyButton"
                       className="text-xs font-semibold text-gray-400 btn-copy hover:text-gray-200"
                       data-clipboard-target="#codeBlock"
@@ -108,7 +109,7 @@ export function SnippetTable({
                           setTimeout(() => {
                             // @ts-ignore
                             isCopied(false);
-                          }, 8000);
+                          }, 2000);
                         });
                       }}
                     >

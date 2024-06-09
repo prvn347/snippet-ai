@@ -66,9 +66,29 @@ function Page() {
               variant={"default"}
               onClick={async () => {
                 setIsLoading(true);
-                const resp = await sendMessage(
-                  `Warning:Please provider the response in html format as i am using your api so that I can populate your resonse neatly on browser.You will be asked a to explain a given code snippet.Your reply should be in html format with proper indentation. Your reply should include a title, a descriptive paragraph,and in bullet points and a concluding paragraph as illustrated below.Example question: What is the meaning of life?Example reply:Title: About life Description: Life. Don't talk to me about life.Conclusion: All the circuits down my left arm code: [${gistMeta.code}]Reply: `
-                );
+                const prompt = `Please provide the response in HTML format as I am using your API to populate the response neatly in a browser-based code snippet sharing application. You will be asked to explain a given code snippet. Your reply should be in HTML format with proper indentation. The explanation should include the following sections:
+
+                1. **Title**: A brief, descriptive title for the explanation.
+                2. **Description**: A detailed paragraph explaining the purpose and functionality of the code snippet.
+                3. **Key Points**: A bullet-point list highlighting important aspects or steps within the code.
+                4. **Conclusion**: A concluding paragraph summarizing the explanation and its relevance.
+                
+                Example question: What is the meaning of life?
+                Example reply:
+                <h1>About Life</h1>
+                <p>The meaning of life has been a topic of debate for centuries. It involves understanding one's purpose, the nature of existence, and the pursuit of happiness.</p>
+                <ul>
+                  <li>Life is complex and multifaceted.</li>
+                  <li>It involves various dimensions including personal, social, and philosophical aspects.</li>
+                  <li>Different cultures and philosophies offer unique perspectives on life’s meaning.</li>
+                </ul>
+                <p>In conclusion, the meaning of life is a deeply personal and subjective concept, varying greatly among individuals and cultures.</p>
+                
+                Please provide the explanation for the following code snippet:
+                
+                Code: [${gistMeta.code}]
+                Reply: `;
+                const resp = await sendMessage(prompt);
                 setGistMeta({ ...gistMeta, analyzedData: resp.mag });
                 setIsLoading(false);
               }}
