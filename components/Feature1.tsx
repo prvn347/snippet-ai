@@ -1,12 +1,14 @@
 import { Montserrat } from "next/font/google";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
+import c from "../app/c.gif";
 import { cn } from "@/lib/utils";
 import { CircleCheckBig, VerifiedIcon } from "lucide-react";
 const montserrat = Montserrat({
   weight: ["100", "400", "600", "700", "800"],
   subsets: ["latin"],
 });
-export function FeatureSection() {
+export function FeatureSection1() {
   return (
     <div className=" grid grid-cols-2   ">
       <div className=" w-96">
@@ -17,9 +19,9 @@ export function FeatureSection() {
               montserrat.className
             )}
           >
-            User friendly&nbsp;
+            Create and Share&nbsp;
             <span className=" bg-gradient-to-r from-violet-100 to-primeryCol inline-block text-transparent bg-clip-text">
-              features
+              Snippets
             </span>
           </span>
           <span
@@ -28,15 +30,21 @@ export function FeatureSection() {
               montserrat.className
             )}
           >
-            Created with security in mind, Codespaces provides a secure
-            development environment through its built-in capabilities and native
-            integration with the GitHub platform.
+            Quickly create code snippets and share them with your team, friends,
+            or the community.
           </span>
         </div>
       </div>
-      <div className=" flex justify-center m-14 bg-[#171B22] rounded-lg shadow-lg backdrop-blur-md">
-        <div className=" flex flex-col gap-3 h-full py-16   ">
-          <div
+      <div className=" flex justify-center m-10 rounded-lg shadow-lg backdrop-blur-md">
+        <div className=" flex flex-col gap-3 h-full py-10  ">
+          <Image
+            className=" rounded-md"
+            src={c}
+            alt="my gif"
+            height={1100}
+            width={1100}
+          />
+          {/* <div
             className={cn(
               "    bg-[#24292F]  flex items-center gap-2 rounded-md  shadow-lg     text-xl   px-3 py-4  backdrop-blur-md   font-semibold ",
               montserrat.className
@@ -62,7 +70,7 @@ export function FeatureSection() {
           >
             <CircleCheckBig color="purple" size={36} className=" " /> Easy{" "}
             sharing.
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

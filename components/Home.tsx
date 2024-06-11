@@ -9,7 +9,7 @@ const montserrat = Montserrat({
 });
 export function Home() {
   return (
-    <div className="  min-h-screen flex justify-center ">
+    <div className="  min-h-screen flex justify-center  ">
       <div className="   flex justify-center flex-col ">
         <div className=" flex flex-col">
           <span
@@ -19,7 +19,7 @@ export function Home() {
             )}
           >
             Code sharing <br /> made{" "}
-            <span className=" bg-gradient-to-r from-violet-100 to-blue-600 inline-block text-transparent bg-clip-text">
+            <span className=" bg-gradient-to-r from-violet-100 to-primeryCol inline-block text-transparent bg-clip-text">
               simple
             </span>
           </span>
@@ -45,7 +45,7 @@ export function Home() {
             )}
             size={"lg"}
           >
-            Signup for free <ChevronRight />
+            Get Started <ChevronRight />
           </Button>
         </div>
       </div>
