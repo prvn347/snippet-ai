@@ -13,6 +13,8 @@ import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import { format } from "date-fns";
+import { getSession, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const btnFont = Poppins({
   weight: ["400", "300"],
@@ -39,6 +41,10 @@ export function SnippetTable({
     hljs.highlightAll();
   }, []);
   const [copied, isCopied] = useState(Boolean);
+  // const session = useSession();
+  // if (session.status == "unauthenticated") {
+  //   redirect("/api/auth/signin");
+  // }
 
   return (
     <div className="  ">

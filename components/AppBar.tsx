@@ -48,16 +48,18 @@ export const Appbar = () => {
           >
             <PlusIcon />
           </Button>
-          <Button
-            className="hidden sm:block"
-            variant={"link"}
-            onClick={async () => {
-              router.push("/snippets");
-            }}
-          >
-            {" "}
-            Your snippets
-          </Button>
+          {session.status == "authenticated" ? (
+            <Button
+              className="hidden sm:block"
+              variant={"link"}
+              onClick={async () => {
+                router.push("/snippets");
+              }}
+            >
+              {" "}
+              Your snippets
+            </Button>
+          ) : null}
           {!user ? (
             <Button
               variant={"link"}
@@ -120,7 +122,7 @@ export const Appbar = () => {
                         <Button
                           variant={"link"}
                           onClick={async () => {
-                            await signOut();
+                            await signOut({ callbackUrl: "/", redirect: true });
                           }}
                         >
                           Logout

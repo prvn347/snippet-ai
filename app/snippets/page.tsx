@@ -2,6 +2,7 @@ import { SnippetTable } from "@/components/SnippetTable";
 import { findAllSnippets, getGistUrls } from "@/components/utils";
 import { cn } from "@/lib/utils";
 import { CodeIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
 import { Poppins } from "next/font/google";
 import { cache } from "react";
 
