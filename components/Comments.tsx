@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { createComment } from "./utils";
 import { useRouter } from "next/navigation";
+import { CompressionStream } from "node:stream/web";
+import { MessageCircleCode } from "lucide-react";
 
 export const Comments = ({ gistId }: { gistId: number }) => {
   const [comment, setComment] = useState("");
@@ -30,7 +32,7 @@ export const Comments = ({ gistId }: { gistId: number }) => {
             window.location.reload();
           }}
         >
-          Comment
+          Comment <MessageCircleCode />
         </Button>
       </div>
     </div>
