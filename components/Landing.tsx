@@ -17,7 +17,7 @@ export function Landing() {
     redirect("/snippets");
   }
   return (
-    <div className=" min-h-screen px-6 m-9">
+    <div className=" min-h-screen px-6 ">
       <Home />
       <FeatureSection1 />
       <FeatureSection2 />

@@ -29,7 +29,7 @@ export function Home() {
               montserrat.className
             )}
           >
-            SnippetAi gets you up and share <br />
+            SnippetAI gets you up and share <br />
             code snippets faster with fully detail explaination.
           </span>
         </div>

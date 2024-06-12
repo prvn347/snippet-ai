@@ -7,7 +7,7 @@ export default async function Home() {
   const session = await getServerSession(authOption);
 
   return (
-    <main>
+    <main className=" bg-bg dark:bg-background">
       <Landing />
     </main>
   );

@@ -18,11 +18,14 @@ export function FeatureSection4() {
           )}
         >
           Ready to Share Your Code&nbsp;
-          <span className=" bg-gradient-to-r from-violet-100 to-primeryCol inline-block text-transparent bg-clip-text">
+          <span className=" bg-gradient-to-r   from-violet-100 to-primeryCol inline-block text-transparent bg-clip-text">
             Smarter?
           </span>
         </span>
         <Button
+          onClick={async () => {
+            await signIn();
+          }}
           variant={"outline"}
           className=" border border-primeryCol  w-48  flex item-center"
         >

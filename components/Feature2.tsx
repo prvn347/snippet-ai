@@ -10,18 +10,7 @@ const montserrat = Montserrat({
 });
 export function FeatureSection2() {
   return (
-    <div className=" grid grid-cols-2   ">
-      <div className=" flex justify-center m-10 rounded-lg shadow-lg backdrop-blur-md">
-        <div className=" flex flex-col gap-3 h-full py-10  ">
-          <Image
-            className=" rounded-md"
-            src={a}
-            alt="my gif"
-            height={1100}
-            width={1100}
-          />
-        </div>
-      </div>
+    <div className=" grid grid-cols-1 sm:grid-cols-2   ">
       <div className=" w-96">
         <div className=" flex flex-col justify-center h-full">
           <span
@@ -44,6 +33,17 @@ export function FeatureSection2() {
             Get detailed, AI-generated explanations of your code, making it
             easier to understand complex snippets.
           </span>
+        </div>
+      </div>
+      <div className=" flex justify-center m-4 sm:m-10 rounded-lg shadow-lg backdrop-blur-md">
+        <div className=" flex flex-col  h-full py-5 sm:py-10  ">
+          <Image
+            className=" rounded-md "
+            src={a}
+            alt="my gif"
+            height={1200}
+            width={1200}
+          />
         </div>
       </div>
     </div>
