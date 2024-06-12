@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { use } from "react";
 import { Adapter } from "next-auth/adapters";
+import { redirect } from "next/dist/server/api-utils";
 const prisma = new PrismaClient();
 export const authOption = {
   // adapter: PrismaAdapter(prisma) as Adapter,
@@ -14,6 +15,11 @@ export const authOption = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret",
   callbacks: {
+    redirect({ url, baseUrl }: any) {
+      const base = process.env.BASE_URL;
+      url = `${base}/create`;
+      return url;
+    },
     jwt: async ({ user, token }: any) => {
       if (user) {
         token.uid = user.id;

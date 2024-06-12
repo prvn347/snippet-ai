@@ -4,7 +4,7 @@ import { CodeInput } from "@/components/CodeInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { sendMessage } from "@/lib/sendMessage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MagicWandIcon, StarIcon } from "@radix-ui/react-icons";
 import Spinner from "@/components/Spinner";
 import { marked } from "marked";
@@ -15,7 +15,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { PocketKnife, Sparkle, Sparkles } from "lucide-react";
+import { ChevronDown, PocketKnife, Sparkle, Sparkles } from "lucide-react";
 import { CodeIcon } from "lucide-react";
 // or const { marked } = require('marked');
 const btnFont = Poppins({
@@ -29,6 +29,7 @@ interface Choice {
 function Page() {
   const { toast } = useToast();
   const router = useRouter();
+  const [open, setOpen] = useState(Boolean);
   const [gistMeta, setGistMeta] = useState({
     fileName: "",
     description: "",
@@ -37,6 +38,7 @@ function Page() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [created, setCreated] = useState(Boolean);
+
   if (created) {
     return (
       <div className="flex justify-center  min-h-screen items-center">
@@ -119,26 +121,38 @@ function Page() {
               />{" "}
             </article>
           )}
-          <div className=" text-right">
-            <Button
-              className={cn("", btnFont.className)}
-              variant={"default"}
-              onClick={async () => {
-                if (
-                  gistMeta.analyzedData &&
-                  gistMeta.code &&
-                  gistMeta.description &&
-                  gistMeta.fileName
-                ) {
-                  setCreated(true);
-                  const resp = await CreateSnippet(gistMeta);
+          <div className="   flex justify-end   ">
+            <div className=" flex">
+              <Button
+                className={cn(" items-center", btnFont.className)}
+                variant={"default"}
+                onClick={async () => {
+                  if (
+                    gistMeta.analyzedData &&
+                    gistMeta.code &&
+                    gistMeta.description &&
+                    gistMeta.fileName
+                  ) {
+                    setCreated(true);
+                    const resp = await CreateSnippet(gistMeta);
 
-                  const id = resp?.id;
-                  if (id) {
-                    router.push(`/snippet/${id}`);
+                    const id = resp?.id;
+                    if (id) {
+                      router.push(`/snippet/${id}`);
+                    } else {
+                      toast({
+                        title: "Your session expired please signin again!",
+                        action: (
+                          <ToastAction altText="Goto schedule to undo">
+                            ok
+                          </ToastAction>
+                        ),
+                      });
+                    }
                   } else {
                     toast({
-                      title: "Your session expired please signin again!",
+                      title: "Content can't be empty",
+
                       action: (
                         <ToastAction altText="Goto schedule to undo">
                           ok
@@ -146,23 +160,29 @@ function Page() {
                       ),
                     });
                   }
-                } else {
-                  toast({
-                    title: "Content can't be empty",
-
-                    action: (
-                      <ToastAction altText="Goto schedule to undo">
-                        ok
-                      </ToastAction>
-                    ),
-                  });
-                }
-                setCreated(false);
-              }}
-            >
-              Create Snippet <CodeIcon />
-            </Button>
+                  setCreated(false);
+                }}
+              >
+                Create Snippet <CodeIcon />
+              </Button>
+              {/* <Button
+                className=""
+                onClick={() => {
+                  setOpen((open) => !open);
+                }}
+              >
+                <ChevronDown />
+              </Button> */}
+            </div>
           </div>
+          {/* {open ? (
+            <div className=" flex justify-end">
+              <div className=" dark:bg-slate-600 p-3 rounded-md bg-white ">
+                <li  className=" outline-none  ">Secret Snippet</li>
+                <li className=" outline-none ">Public Snippet</li>
+              </div>
+            </div>
+          ) : null} */}
           {/* <div>
             <p className=" rounded-lg max-w-screen-lg bg-background border border-input p-3">
               {isLoading ? (
