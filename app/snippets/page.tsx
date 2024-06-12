@@ -17,7 +17,7 @@ export default async function SnippetPage() {
   const mergedData = mergeSnippetsWithUrls(getAllSnippets, getAllGistUrls);
 
   return (
-    <div className="bg-bg   dark:bg-background  min-h-screen">
+    <div className="bg-bg  dark:bg-background  min-h-screen">
       <div
         className={cn(
           " underline-offset-3 text-lg text-primeryCol p-2 sm:p-7 font-bold flex items-center",

@@ -47,7 +47,7 @@ export function SnippetTable({
   // }
 
   return (
-    <div className="  ">
+    <div className="  mx-4 sm:mx-0  ">
       <div>
         <div className="flex justify-center ">
           <div className="bg-bg  dark:bg-background  max-w-3xl  lg:mx-0 flex flex-col justify-center   gap-4">
