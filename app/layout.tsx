@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { Providers } from "./provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
