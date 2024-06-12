@@ -56,7 +56,7 @@ export const Appbar = () => {
             }}
           >
             {" "}
-            All snippets
+            Your snippets
           </Button>
           {!user ? (
             <Button

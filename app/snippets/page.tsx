@@ -23,7 +23,7 @@ export default async function SnippetPage() {
           btnFont.className
         )}
       >
-        <CodeIcon /> Your Snippets
+        <CodeIcon /> My Snippets
       </div>
       {getAllSnippets ? (
         <SnippetTable snippets={mergedData} />
