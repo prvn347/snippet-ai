@@ -1,4 +1,4 @@
-# CodeShareAI
+# SnippetAI
 
 SnippetAI is a modern code-sharing platform similar to GitHub Gist, with an additional feature of AI-powered code explanations. Built with Next.js, TypeScript, Gemini Pro API, Tailwind CSS, Prisma ORM, and PostgreSQL, it provides a seamless experience for sharing and understanding code snippets.
 
