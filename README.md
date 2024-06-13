@@ -23,8 +23,8 @@ SnippetAI is a modern code-sharing platform similar to GitHub Gist, with an addi
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/CodeShareAI.git
-   cd CodeShareAI
+   git clone https://github.com/prvn347/snippet.git
+   cd snippet
 2. **Install Dependencies**:
    ```bash
    npm install
