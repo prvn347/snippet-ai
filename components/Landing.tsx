@@ -9,6 +9,7 @@ import { FeatureSection3 } from "./Feature3";
 import { FeatureSection4 } from "./Feature4";
 import { useState } from "react";
 import { redirect } from "next/navigation";
+import { LoopScroll } from "./CodeLoop";
 
 export function Landing() {
   const session = useSession();
@@ -22,6 +23,7 @@ export function Landing() {
       <FeatureSection1 />
       <FeatureSection2 />
       <FeatureSection3 />
+
       <FeatureSection4 />
     </div>
   );

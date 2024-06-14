@@ -35,7 +35,7 @@ export function FeatureSection2() {
           </span>
         </div>
       </div>
-      <div className=" flex justify-center m-4 sm:m-10 rounded-lg shadow-lg backdrop-blur-md">
+      <div className=" flex justify-center m-4 sm:m-10 rounded-lg shadow-lg backdrop-blur-md animate-slidein ">
         <div className=" flex flex-col  h-full py-5 sm:py-10  ">
           <Image
             className=" rounded-md "

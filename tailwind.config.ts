@@ -1,3 +1,4 @@
+import { transform } from "next/dist/build/swc";
 import type { Config } from "tailwindcss";
 
 const config = {
@@ -74,10 +75,23 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "loop-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
+        slidein: {
+          from: { translate: "150vw 0", scale: "200% 1" },
+          to: {
+            translate: "0 0",
+            scale: "100% 1",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "loop-scroll": "loop-scroll 50s linear infinite",
+        slidein: "slidein 1s linear ",
       },
     },
   },
