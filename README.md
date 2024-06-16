@@ -44,3 +44,5 @@ SnippetAI is a modern code-sharing platform similar to GitHub Gist, with an addi
 5. **Run the Development Server**:
    ```bash
    npm run dev
+
+Open http://localhost:3000 with your browser to see the result.
